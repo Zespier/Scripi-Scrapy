@@ -26,4 +26,8 @@ public class Geode : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+    public void Hit() {
+        Break();
+    }
 }
