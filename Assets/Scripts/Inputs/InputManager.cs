@@ -48,10 +48,8 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
 
     private bool _isLocked = false;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
@@ -63,9 +61,7 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
             GameControls.Interface.SetCallbacks(this);
 
             GameControls.System.Enable();
-        }
-        else
-        {
+        } else {
             Destroy(gameObject);
         }
     }
@@ -74,12 +70,16 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
         InputUser.onChange += OnInputDeviceChange;
 
         GameControls.System.Enable();
+        GameControls.Character.Enable();
+        GameControls.Interface.Enable();
     }
 
     private void OnDisable() {
         InputUser.onChange -= OnInputDeviceChange;
 
         GameControls.System.Disable();
+        GameControls.Character.Disable();
+        GameControls.Interface.Disable();
     }
 
     public void SetInputState(InputState newState) {
@@ -209,26 +209,22 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
     #endregion
 
     #region Interface Actions
-    public void OnNavigate(InputAction.CallbackContext context)
-    {
+    public void OnNavigate(InputAction.CallbackContext context) {
         Interface.OnNavigation?.Invoke(context);
     }
 
-    public void OnSubmit(InputAction.CallbackContext context)
-    {
+    public void OnSubmit(InputAction.CallbackContext context) {
         Interface.OnSubmit?.Invoke(context);
     }
 
-    public void OnCancel(InputAction.CallbackContext context)
-    {
+    public void OnCancel(InputAction.CallbackContext context) {
         Interface.OnCancel?.Invoke(context);
     }
 
     public void OnPoint(InputAction.CallbackContext context) {
     }
 
-    public void OnClick(InputAction.CallbackContext context)
-    {
+    public void OnClick(InputAction.CallbackContext context) {
         Interface.OnClick?.Invoke(context);
     }
 
@@ -247,33 +243,27 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context) {
     }
 
-    public void OnSwitchBranch(InputAction.CallbackContext context)
-    {
+    public void OnSwitchBranch(InputAction.CallbackContext context) {
         Interface.OnSwitchBranch?.Invoke(context);
     }
 
-    public void OnSwitchMenu(InputAction.CallbackContext context)
-    {
+    public void OnSwitchMenu(InputAction.CallbackContext context) {
         Interface.OnSwitchMenu?.Invoke(context);
     }
 
-    public void OnAccept(InputAction.CallbackContext context)
-    {
+    public void OnAccept(InputAction.CallbackContext context) {
         Interface.OnInteraction?.Invoke(context);
     }
 
-    public void OnDetails(InputAction.CallbackContext context)
-    {
+    public void OnDetails(InputAction.CallbackContext context) {
         Interface.OnDetails?.Invoke(context);
     }
 
-    public void OnBack(InputAction.CallbackContext context)
-    {
+    public void OnBack(InputAction.CallbackContext context) {
         Interface.OnBack?.Invoke(context);
     }
 
-    public void OnConfirm(InputAction.CallbackContext context)
-    {
+    public void OnConfirm(InputAction.CallbackContext context) {
         Interface.OnConfirm?.Invoke(context);
     }
 
@@ -284,8 +274,7 @@ public class InputManager : MonoBehaviour, ISystemActions, ICharacterActions, IB
     #endregion
 }
 
-public class InterfaceActionsWrapper
-{
+public class InterfaceActionsWrapper {
     // Interface Map Events
     public Action<InputAction.CallbackContext> OnBack;
     public Action<InputAction.CallbackContext> OnSwitchBranch;

@@ -38,6 +38,8 @@ public class CameraHolder : MonoBehaviour {
         CameraForward();
 
         RotateCameraHolder();
+
+        Debug.Log(InputManager.IsChangingViewDirection);
     }
 
     public void CameraForward() {

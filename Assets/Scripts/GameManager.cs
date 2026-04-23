@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour {
     private void InitializeSingleton() {
         if (instance == null) {
             instance = this;
+            GameState = GameState.Playing;
             //SaveSystem.Load(); //Loads what can be loaded in this scene
         }
     }
