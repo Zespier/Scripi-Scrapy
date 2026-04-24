@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CameraHolder : MonoBehaviour {
 
+    public Transform player;
+    public float height = 1.75f;
     public Transform target;
     public Transform targetHelper;
     public bool resetRotationAtStart;
@@ -13,7 +15,7 @@ public class CameraHolder : MonoBehaviour {
     public Transform actualCamera;
     public float shakeDuration = 1.5f;
     public float shakeMagnitude = 0.2f;
-   
+
     public static CameraHolder instance;
     private void Awake() {
 
@@ -35,11 +37,19 @@ public class CameraHolder : MonoBehaviour {
 
     private void Update() {
 
+        Movement();
+
         CameraForward();
 
         RotateCameraHolder();
 
         Debug.Log(InputManager.IsChangingViewDirection);
+    }
+
+    public void Movement() {
+        target.position = player.position + Vector3.up * height;
+        targetHelper.position = target.position;
+        transform.position = target.position;
     }
 
     public void CameraForward() {
