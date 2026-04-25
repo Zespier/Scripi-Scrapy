@@ -28,7 +28,7 @@ public class MouseLock {
             switch (gameState) {
                 case GameState.Playing:
                     Scene currentScene = SceneManager.GetActiveScene();
-                    if (currentScene.name == "Lobby" || currentScene.name == "Lobby_SD") {
+                    if (currentScene.name == "Game" || currentScene.name == "Lobby_SD") {
                         LockMouse();
                     } else {
                         UnlockMouse();

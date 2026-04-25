@@ -19,7 +19,7 @@ public class Geode : MonoBehaviour {
             rb.linearVelocity = this.rb.linearVelocity;
             rb.angularVelocity = this.rb.angularVelocity;
 
-            Vector3 randomDirection = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1)).normalized;
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1), Random.Range(-1f, 1), Random.Range(-1f, 1)).normalized;
             float randomForce = Random.Range(breakForce.x, breakForce.y);
 
             rb.AddForce(randomDirection * randomForce, ForceMode.Impulse);

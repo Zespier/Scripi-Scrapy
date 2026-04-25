@@ -31,21 +31,42 @@ public class Interactor : MonoBehaviour {
         for (int i = 0; i < hits.Length; i++) {
 
             if (hits[i].collider != null) {
+                if (hits[i].collider.CompareTag("Player")) { continue; }
 
-                Geode geode = hits[i].collider.transform.parent.GetComponentInChildren<Geode>();
-                if (geode != null) {
+                Rigidbody rigidbody = hits[i].collider.GetComponent<Rigidbody>();
+                if (rigidbody != null) {
 
-                    if (grabbedObject == geode.rb) {
+                    if (grabbedObject == rigidbody) {
                         grabbedObject.useGravity = true;
                         grabbedObject = null;
-                        geode.rb.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
-                        geode.isLaunched = true;
+                        rigidbody.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
+
 
                     } else {
-                        grabbedObject = geode.rb;
+                        grabbedObject = rigidbody;
                     }
                     //geode.Hit();
                     break;
+                } else {
+
+                    rigidbody = hits[i].collider.transform.parent.GetComponentInChildren<Rigidbody>();
+                    if (rigidbody != null) {
+
+                        Geode geode = rigidbody.GetComponent<Geode>();
+                        if (geode != null) {
+                            if (grabbedObject == geode.rb) {
+                                grabbedObject.useGravity = true;
+                                grabbedObject = null;
+                                geode.rb.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
+                                geode.isLaunched = true;
+
+
+                            } else {
+                                grabbedObject = geode.rb;
+                            }
+                        }
+                        break;
+                    }
                 }
             }
         }

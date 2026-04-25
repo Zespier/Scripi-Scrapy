@@ -388,6 +388,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f51c92d6-0978-43ba-a9de-255fbb5d9305"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e26f59c1-2084-445c-966b-dca3155d1ea4"",
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
