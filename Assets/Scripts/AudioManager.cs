@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour {
     public AudioClip rockBreak1Clip;
     public AudioSource rockBreak2;
     public AudioClip rockBreak2Clip;
+    public AudioSource pop;
+    public AudioClip popClip;
 
     public bool playBreakVariant;
     public bool useAgudo;
@@ -19,6 +21,10 @@ public class AudioManager : MonoBehaviour {
     public static AudioManager instance;
     private void Awake() {
         if (!instance) { instance = this; }
+    }
+
+    public void PlayPop() {
+
     }
 
     public void PlayRockHit() {

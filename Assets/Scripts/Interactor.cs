@@ -22,6 +22,10 @@ public class Interactor : MonoBehaviour {
             Interact();
         }
 
+        if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
+            Hit();
+        }
+
         if (InputManager.GameControls.Character.Jump.WasPressedThisFrame()) {
             StartHitting();
         }
