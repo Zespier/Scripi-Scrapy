@@ -32,9 +32,9 @@ public class Geode : MonoBehaviour {
 
             rb.AddForce(randomDirection * randomForce, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * randomForce, ForceMode.Impulse);
-
-            Destroy(gameObject);
         }
+
+        Destroy(gameObject);
 
         CameraHolder.instance.BreakShake();
     }

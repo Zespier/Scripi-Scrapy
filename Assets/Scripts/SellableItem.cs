@@ -7,6 +7,14 @@ public class SellableItem : MonoBehaviour {
 
     public float sellAmount = 13f;
 
+    private void OnEnable() {
+        AddSellableItem(this);
+    }
+
+    private void OnDisable() {
+        RemoveSellableItem(this);
+    }
+
     public void AddSellableItem(SellableItem sellableItem) {
         if (!activeSellableItems.Contains(sellableItem)) {
             activeSellableItems.Add(sellableItem);

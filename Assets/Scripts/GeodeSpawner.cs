@@ -6,7 +6,7 @@ public class GeodeSpawner : MonoBehaviour {
     public Geode geodePrefab;
 
     private void Update() {
-        if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
+        if (InputManager.GameControls.Character.Dance.WasPressedThisFrame()) {
             SpawnGeode();
         }
     }

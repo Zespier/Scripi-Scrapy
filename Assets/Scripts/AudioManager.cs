@@ -24,7 +24,8 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void PlayPop() {
-
+        pop.pitch = Random.Range(0.91f, 1.09f);
+        pop.PlayOneShot(popClip);
     }
 
     public void PlayRockHit() {
