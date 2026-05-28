@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Paredes
+  m_Name: MesaCohonera
   m_Shader: {fileID: -6465566751694194690, guid: 3fc760d96609cf54ebc1c008c307a7a6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -120,8 +120,8 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.5283019, g: 0.47148478, b: 0.4211463, a: 1}
     - _Color: {r: 0.5283019, g: 0.47148478, b: 0.42114627, a: 1}
-    - _Color_1: {r: 1, g: 0.11792451, b: 0.11792451, a: 1}
-    - _Color_2: {r: 0.28773576, g: 1, b: 0.8551675, a: 1}
+    - _Color_1: {r: 0.55419374, g: 0.11764705, b: 1, a: 1}
+    - _Color_2: {r: 1, g: 0.0141509175, b: 0.21909042, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
