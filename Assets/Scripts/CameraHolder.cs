@@ -13,8 +13,10 @@ public class CameraHolder : MonoBehaviour {
     public float sensitivity = 8f;
     public float cameraRotationLerpSpeed = 10f;
     public Transform actualCamera;
-    public float shakeDuration = 1.5f;
-    public float shakeMagnitude = 0.2f;
+    public ShakeData hitShake;
+    public ShakeData breakShake;
+
+    private Coroutine c_Shake;
 
     public static CameraHolder instance;
     private void Awake() {
@@ -25,25 +27,16 @@ public class CameraHolder : MonoBehaviour {
             target.forward = -Vector3.forward;
             targetHelper.forward = -Vector3.forward;
         }
-    }
 
-    private void OnEnable() {
-        //InputManager.OnCharacterInteract += 
-    }
-
-    private void OnDisable() {
-        //InputManager.OnCharacterInteract -= 
+        MouseLock.LockMouse();
     }
 
     private void Update() {
-
         Movement();
 
         CameraForward();
 
         RotateCameraHolder();
-
-        Debug.Log(InputManager.IsChangingViewDirection);
     }
 
     public void Movement() {
@@ -77,21 +70,40 @@ public class CameraHolder : MonoBehaviour {
         targetHelper.forward = newForward;
     }
 
-    public IEnumerator C_Shake() {
-        Vector3 originalPos = Vector3.zero;
+    public void HitShake() {
+        Shake(hitShake);
+    }
+
+    public void BreakShake() {
+        Shake(breakShake);
+    }
+
+    public void Shake(ShakeData shakeData) {
+        if (c_Shake != null) {
+            StopCoroutine(c_Shake);
+        }
+        c_Shake = StartCoroutine(C_Shake(shakeData));
+    }
+
+    private IEnumerator C_Shake(ShakeData shakeData) {
+
+        float x = Random.Range(-1f, 1f) * shakeData.shakeMagnitude;
+        float y = Random.Range(-1f, 1f) * shakeData.shakeMagnitude;
+
+        actualCamera.localPosition = new Vector3(x, y, 0);
+        actualCamera.localRotation = shakeData.rotationHelper.localRotation;
 
         float timer = Time.time;
 
-        while (Time.time - timer < shakeDuration) {
-            float x = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude;
-            float y = UnityEngine.Random.Range(-1f, 1f) * shakeMagnitude;
+        while (Time.time - timer < shakeData.shakeDuration) {
 
-            actualCamera.localPosition = new Vector3(x, y, originalPos.z);
-
+            actualCamera.localPosition = Vector3.Lerp(new Vector3(x, y, 0), Vector3.zero, (Time.time - timer) / shakeData.shakeDuration);
+            actualCamera.localRotation = Quaternion.Lerp(shakeData.rotationHelper.localRotation, Quaternion.identity, (Time.time - timer) / shakeData.shakeDuration);
             yield return null;
         }
 
-        actualCamera.localPosition = originalPos;
+        actualCamera.localPosition = Vector3.zero;
+        actualCamera.localRotation = Quaternion.identity;
     }
 }
 
@@ -100,4 +112,11 @@ public enum DeathType {
     DebajoDeLaMesa,
     SalaDeReuniones,
     Tele,
+}
+
+[System.Serializable]
+public struct ShakeData {
+    public float shakeDuration; //Recomended = 0.19f;
+    public float shakeMagnitude; //Recomended = 0.09f;
+    public Transform rotationHelper;
 }

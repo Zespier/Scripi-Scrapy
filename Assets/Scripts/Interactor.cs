@@ -1,30 +1,67 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour {
 
     public float grabDistanceFromCamera = 4f;
     public float launchForce = 10f;
+    public float attackSpeed = 2f;
+    public float timeToCancelHit = 0.9f;
 
     private Rigidbody grabbedObject;
+    private bool _isHitting;
+    private float _hitCancelTimer;
+    private float _attackSpeedTimer;
+    private bool _lastFrameHadGeodeBeingHit;
+
+    protected virtual void SetTimer() {
+        _attackSpeedTimer = !_lastFrameHadGeodeBeingHit ? Time.time : _attackSpeedTimer + 1f / attackSpeed;
+    }
+
+    private void Update() {
+        if (InputManager.GameControls.Character.Interact.WasPressedThisFrame()) {
+            Interact();
+        }
+
+        if (InputManager.GameControls.Character.Jump.WasPressedThisFrame()) {
+            StartHitting();
+        }
+
+        bool thereIsGeodeInFront = Hit(justCheck: true);
+
+        for (int i = 0; i < Cross.instance.parts.Count; i++) {
+            Cross.instance.parts[i].gameObject.SetActive(thereIsGeodeInFront);
+        }
+
+        if (_isHitting && Time.time - _attackSpeedTimer >= 1f / attackSpeed) {
+            if (Hit()) {
+                _hitCancelTimer = Time.time;
+                return;
+            }
+
+            if (Time.time - _hitCancelTimer > timeToCancelHit) {
+                _isHitting = false;
+            }
+        }
+
+        _lastFrameHadGeodeBeingHit = thereIsGeodeInFront;
+    }
 
     private void FixedUpdate() {
         if (grabbedObject != null) {
             grabbedObject.useGravity = false;
+            grabbedObject.linearVelocity = Vector3.zero;
+            grabbedObject.angularVelocity = Vector3.zero;
             grabbedObject.MovePosition(Camera.main.transform.position + Camera.main.transform.forward * grabDistanceFromCamera);
         }
     }
 
-    private void OnEnable() {
-        InputManager.OnCharacterInteract += Interact;
+    public void StartHitting() {
+        _isHitting = true;
+        _hitCancelTimer = Time.time;
+        _lastFrameHadGeodeBeingHit = false;
     }
 
-    private void OnDisable() {
-        InputManager.OnCharacterInteract -= Interact;
-    }
-
-    public void Interact(InputAction.CallbackContext context) {
-        if (context.phase != InputActionPhase.Started) { return; }
+    public void Interact() {
 
         RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
 
@@ -70,5 +107,43 @@ public class Interactor : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public bool Hit(bool justCheck = false) {
+
+        RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
+
+        for (int i = 0; i < hits.Length; i++) {
+
+            if (hits[i].collider != null) {
+                if (hits[i].collider.CompareTag("Player")) { continue; }
+
+                Rigidbody rigidbody = hits[i].collider.GetComponent<Rigidbody>();
+                if (rigidbody != null && rigidbody.TryGetComponent(out Geode geode)) {
+
+                    if (justCheck) {
+                        return true;
+                    }
+                    geode.Hit();
+                    SetTimer();
+                    return true;
+
+                } else {
+
+                    rigidbody = hits[i].collider.transform.parent.GetComponentInChildren<Rigidbody>();
+                    if (rigidbody != null && rigidbody.TryGetComponent(out Geode geodee)) {
+
+                        if (justCheck) {
+                            return true;
+                        }
+                        geodee.Hit();
+                        SetTimer();
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

@@ -1,22 +1,17 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GeodeSpawner : MonoBehaviour {
 
     public Transform spawnPoint;
     public Geode geodePrefab;
 
-    private void OnEnable() {
-        InputManager.OnCharacterAttack += SpawnGeode;
+    private void Update() {
+        if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
+            SpawnGeode();
+        }
     }
 
-    private void OnDisable() {
-        InputManager.OnCharacterAttack -= SpawnGeode;
-    }
-
-    private void SpawnGeode(InputAction.CallbackContext context) {
-        if (context.phase != InputActionPhase.Started) { return; }
-
+    private void SpawnGeode() {
         Instantiate(geodePrefab, spawnPoint.position, Quaternion.identity).newParent = transform;
     }
 }

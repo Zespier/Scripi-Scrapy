@@ -8,9 +8,17 @@ public class Geode : MonoBehaviour {
     public List<GameObject> children;
     public Transform newParent;
     public bool isLaunched;
+    public int health = 5;
+
+    private int _currentHealth;
+
+    private void OnEnable() {
+        _currentHealth = health;
+    }
 
     [ContextMenu("Break")]
     public void Break() {
+
         for (int i = 0; i < children.Count; i++) {
             children[i].transform.parent = newParent;
 
@@ -27,10 +35,22 @@ public class Geode : MonoBehaviour {
 
             Destroy(gameObject);
         }
+
+        CameraHolder.instance.BreakShake();
     }
 
     public void Hit() {
-        Break();
+        Cross.instance.CrossAnimation();
+
+        _currentHealth--;
+        if (_currentHealth <= 0) {
+            Break();
+            AudioManager.instance.PlayRockBreak();
+
+        } else {
+            CameraHolder.instance.HitShake();
+            AudioManager.instance.PlayRockHit();
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
