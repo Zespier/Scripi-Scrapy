@@ -35,16 +35,10 @@ public class MouseLock {
                     }
                     break;
 
-                case GameState.SeeingAnimation:
-                case GameState.Dying:
+                case GameState.InCinematic:
                     LockMouse();
                     break;
-                case GameState.Dialoguing:
-                case GameState.Paused:
                 case GameState.InInterface:
-                case GameState.WatchingQuestLog:
-                case GameState.SeeingForgeAnimation:
-                    UnlockMouse();
                     break;
                 default:
                     break;
@@ -52,6 +46,7 @@ public class MouseLock {
         }
     }
 }
+
 public enum CursorState {
     Visible,
     Hidden

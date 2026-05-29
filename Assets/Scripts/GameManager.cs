@@ -1,60 +1,68 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour {
 
     public GameState debugState;
 
-    private static GameState _gameState;
+    private GameControls _controls;
 
-    public static GameState GameState {
-        get => _gameState;
-        set {
-            _gameState = value;
-            MouseLock.ManageMouse(_gameState);
-            OnGameStateChanged?.Invoke(_gameState);
+    public static GameState gameState;
+
+    public static GameManager instance;
+    private void Awake() {
+        if (!instance) { instance = this; }
+
+        _controls = new GameControls();
+        _controls.Enable();
+
+        SetGameState(GameState.Playing);
+        InputManager.instance.TrySetInputMode(InputMode.Character);
+        MouseLock.LockMouse();
+    }
+
+    //Whatever happens when exiting a game state
+    private void ExitCurrentGameState() {
+        switch (gameState) {
+            case GameState.Playing:
+                break;
+            case GameState.InCinematic:
+                break;
+            case GameState.InInterface:
+                break;
+            default:
+                break;
         }
     }
 
-    public static Action<GameState> OnGameStateChanged;
+    public void SetGameState(GameState newState) {
+        ExitCurrentGameState();
 
-    public static GameManager instance;
+        gameState = newState;
 
-    private void Awake() {
-        InitializeSingleton();
+        EnterGameState();
     }
-
-    private void OnDestroy() {
-        //SaveSystem.Save(); //saves what can be saved in this scene
+    //Whatever happens when entering a new gamestate
+    private void EnterGameState() {
+        switch (gameState) {
+            case GameState.Playing:
+                break;
+            case GameState.InCinematic:
+                break;
+            case GameState.InInterface:
+                break;
+            default:
+                break;
+        }
     }
 
     private void Update() {
-        debugState = _gameState;
-    }
-
-    private void InitializeSingleton() {
-        if (instance == null) {
-            instance = this;
-            GameState = GameState.Playing;
-            //SaveSystem.Load(); //Loads what can be loaded in this scene
-        }
+        debugState = gameState;
     }
 }
 
 public enum GameState : byte {
-    Playing,
-    BuildingTower,
-    Paused,
-    Dialoguing,
-    SeeingAnimation,
-    SeeingForgeAnimation,
-    InInterface,
-    WatchingQuestLog,
-    FinishDemo,
-    Tutorial,
-    Dying,
+    Playing, //The player is in the most basic state of the game, usually you can transition to any state or Input mode from here
+    InInterface, //Basically any interface that allows input interaction
+    InCinematic, //Interfaces without interaction. Can't pause during a cinematic.
 }
 //TODO: Task list shows the number of this line, I'm interested in seeing the total amount of lines my game has, so I will put this in the last line of every script I find.

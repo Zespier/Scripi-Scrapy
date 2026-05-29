@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class Money : MonoBehaviour {
 
+    //Se me ocurre para la animacion, que 
+
     public TMP_Text moneyText;
-    public float currentMoney = 100;
+    public float currentMoney;
 
     public static Money instance;
 

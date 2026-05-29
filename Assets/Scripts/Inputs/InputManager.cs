@@ -3,36 +3,32 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
-public enum InputState { Character, Building, Interface }
 public class InputManager : MonoBehaviour {
-    public static InputManager Instance { get; private set; }
-    public static GameControls GameControls { get; private set; }
-    public static string CurrentControlScheme = "";
 
-    public InputState currentState;
-
-    public static Action<string, ControllerType> OnControlSchemeChanged;
+    public InputMode currentInputMode;
+    public static string currentControlScheme = "";
 
     // Character Variables
+    public static GameControls GameControls { get; private set; }
     public static Vector2 Movement => GameControls.Character.Movement.ReadValue<Vector2>();
     public static Vector2 ViewDirection => GameControls.Character.View.ReadValue<Vector2>();
     public static bool IsMoving => Movement.magnitude > 0.1f;
     public static bool IsChangingViewDirection => ViewDirection.magnitude > 0.1f;
-    public bool IsLocked => _isLocked;
 
     // Building Variables
     public static Vector2 BuildingRadialSelection => GameControls.Building.RadialSelection.ReadValue<Vector2>();
 
-    private bool _isLocked = false;
+    public static Action<string, ControllerType> OnControlSchemeChanged;
 
+    public static InputManager instance;
     private void Awake() {
-        if (Instance == null) {
-            Instance = this;
+        if (!instance) {
+            instance = this;
             DontDestroyOnLoad(gameObject);
 
             GameControls = new GameControls();
+            GameControls.Enable();
 
-            GameControls.System.Enable();
         } else {
             Destroy(gameObject);
         }
@@ -40,10 +36,6 @@ public class InputManager : MonoBehaviour {
 
     private void OnEnable() {
         InputUser.onChange += OnInputDeviceChange;
-
-        GameControls.System.Enable();
-        GameControls.Character.Enable();
-        GameControls.Interface.Enable();
     }
 
     private void OnDisable() {
@@ -51,12 +43,46 @@ public class InputManager : MonoBehaviour {
 
         GameControls.System.Disable();
         GameControls.Character.Disable();
+        GameControls.Building.Disable();
         GameControls.Interface.Disable();
     }
 
-    public void SetInputState(InputState newState) {
-        if (_isLocked) return;
+    public bool TrySetInputMode(InputMode mode) {
+        if (!CanUseInputMode(mode))
+            return false;
 
+        SetInputMode(mode);
+
+        return true;
+    }
+
+    //Whatever happens when exitting an input mode
+    private void ExitCurrentInputMode() {
+        switch (currentInputMode) {
+            case InputMode.Character:
+                break;
+            case InputMode.Building:
+                break;
+            case InputMode.Interface:
+                break;
+            case InputMode.None:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void SetInputMode(InputMode newState) {
+        ExitCurrentInputMode();
+
+        currentInputMode = newState;
+
+        EnablingOfInputMaps();
+
+        EnterNewState();
+    }
+
+    private void EnablingOfInputMaps() {
         // desactivamos todo
         GameControls.Character.Disable();
         GameControls.Building.Disable();
@@ -65,57 +91,86 @@ public class InputManager : MonoBehaviour {
         // este siempre siempre siempre lo mantenemos activo
         GameControls.System.Enable();
 
-        switch (newState) {
-            case InputState.Character:
+
+        switch (currentInputMode) {
+            case InputMode.Character:
                 GameControls.Character.Enable();
-                currentState = InputState.Character;
-
-                // Debug.Log("character enabled");
                 break;
-            case InputState.Building:
+
+            case InputMode.Building:
                 GameControls.Building.Enable();
-                currentState = InputState.Building;
-
-                // Debug.Log("building enabled");
                 break;
-            case InputState.Interface:
-                GameControls.Interface.Enable();
-                currentState = InputState.Interface;
 
-                // Debug.Log("interface enabled");
+            case InputMode.Interface:
+                GameControls.Interface.Enable();
+                break;
+
+            case InputMode.None:
                 break;
         }
     }
 
+    private void EnterNewState() {
+        switch (currentInputMode) {
+            case InputMode.Character:
+                break;
+            case InputMode.Building:
+                break;
+            case InputMode.Interface:
+                break;
+            case InputMode.None:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private bool CanUseInputMode(InputMode mode) {
+        //Something REALLY important to understand from this, is taht GameState and InputModes, even if they look alike, are very different. Game state is the state of the game, for example, "playing" means that the player is free to move, attack, build, interact with something on the scene, etc... 
+        //InputMode in the other hand, is how the inputs are interpreted, for example, "Character" means the mechanics of the character Skuld, "Building" only reacts to the build mode inputs, and "Interface" moves throught UI. 
+        //The problem we had earlier is that building should only be allowed when the game state is "playing", but you could change to building during a cinematic, or watching the endgame screen.
+        //SOOOOO, this method is basically putting a little check before changing input mode, since InputMode is changed independetly of gameState.
+
+        switch (GameManager.gameState) {
+            case GameState.Playing:
+                return mode == InputMode.Character || mode == InputMode.Building; //It would make 0 sense to detect interface inputs during gameplay
+            case GameState.InInterface:
+                return mode == InputMode.Interface; //During an interactable interface, it's only allowed to detect interface inputs
+            case GameState.InCinematic:
+                return mode == InputMode.None; //During a cinematic the only input mode allowed is no input detection at all
+
+            //I know some people might want to go to InputMode.None during any other gamestate, but honestly, why? That is a cinematic.
+            //If not, just add mode == InputMode.None to the other gameStates
+            default:
+                break;
+        }
+
+        return true;
+    }
+
     public void DisableInputsForCinematic() {
-        GameControls.Character.Disable();
-        GameControls.Building.Disable();
-        GameControls.Interface.Disable();
-        LockInputState(true);
+        SetInputMode(InputMode.None);
     }
-
     public void RecoverInputsAfterCinematic() {
-        LockInputState(false);
-        SetInputState(InputState.Character);
-    }
-
-    public void LockInputState(bool state) {
-        _isLocked = state;
+        SetInputMode(InputMode.Character);
     }
 
     private void OnInputDeviceChange(InputUser user, InputUserChange change, InputDevice device) {
         if (change == InputUserChange.ControlSchemeChanged) {
-            // Debug.Log($"Control Scheme Changed: {user.controlScheme.Value.name}\nController type: {Controller.GetControllerType()}");
 
-            CurrentControlScheme = user.controlScheme.Value.name;
+            currentControlScheme = user.controlScheme.Value.name;
 
-            OnControlSchemeChanged?.Invoke(CurrentControlScheme, Controller.GetControllerType());
+            OnControlSchemeChanged?.Invoke(currentControlScheme, Controller.GetControllerType());
 
-            MouseLock.ManageMouse(GameManager.GameState);
-        }
-
-        if (change == InputUserChange.DevicePaired) {
+            //ES VERDAD EL RATON SI PONEMOS EL MANDO QUE PASA
+            //MouseLock.ManageMouse(GameManager.GameState);
         }
     }
+}
 
+public enum InputMode {
+    Character,
+    Building,
+    Interface,
+    None
 }

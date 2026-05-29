@@ -14,24 +14,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleBuilder",
-                    "type": "Button",
-                    "id": "67d4ad8f-afd9-48cc-b394-8c6ca27fc7ce",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleInventory",
-                    "type": "Button",
-                    "id": "96e274df-f113-4cc8-bf72-b7d246b79695",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -65,50 +47,6 @@
                     "processors": "",
                     "groups": ";keyboard",
                     "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1667aff1-5574-4028-b1a2-fbf76b334f09",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleBuilder",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2eb21b99-9412-41d4-ae1b-7d0b05aa5848",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleBuilder",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9d61af31-653f-41df-bf06-9df59c7064dd",
-                    "path": "<Keyboard>/i",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "96912b37-890d-4959-8fab-3d3d4f39809d",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -198,6 +136,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ToggleBuilder",
+                    "type": "Button",
+                    "id": "aea55f85-65aa-4bcf-9d36-294a13b12b83",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleInventory",
+                    "type": "Button",
+                    "id": "be926bf1-02cc-4215-966b-a138dd4b212f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -530,6 +486,50 @@
                     "action": "SpecialAbility",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "50624c7a-79c4-4434-85e0-d491203c905a",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03093b79-33cb-4792-8a94-11d7d7b3acd6",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6ce287bb-4a03-41e2-8625-5d610d0e952c",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleBuilder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a12f66a-d34a-4b71-b2c7-dcfb90bc1777",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleBuilder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -559,6 +559,15 @@
                     "name": "CycleUpgradesBranch",
                     "type": "Button",
                     "id": "21a75306-37ab-4e59-a12b-631b79ca0bab",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleBuilder",
+                    "type": "Button",
+                    "id": "65c482ac-7bf2-4a11-9c7b-d40ea6275e8e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -640,6 +649,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "CycleUpgradesBranch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c14a1189-e3e0-4717-bfb8-460c0d5b4f5d",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleBuilder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1bdce2a-92f7-4798-ab4d-43c014ee3dec",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleBuilder",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -797,6 +828,15 @@
                     "name": "Any",
                     "type": "Button",
                     "id": "29cac22e-c3c3-4c97-8ff1-2b65060b28a6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleInventory",
+                    "type": "Button",
+                    "id": "df614102-65cd-4c65-821d-3a0d4465aa2d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1681,6 +1721,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Any",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57e0f8ef-fe80-46d9-9a5f-e218013f0417",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5272167f-5e75-49d2-be8e-c5d8694bdf4c",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

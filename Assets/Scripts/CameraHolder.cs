@@ -27,8 +27,6 @@ public class CameraHolder : MonoBehaviour {
             target.forward = -Vector3.forward;
             targetHelper.forward = -Vector3.forward;
         }
-
-        MouseLock.LockMouse();
     }
 
     private void Update() {
