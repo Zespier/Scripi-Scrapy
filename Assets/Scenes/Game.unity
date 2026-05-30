@@ -2594,6 +2594,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433018095}
   m_CullTransparentMesh: 1
+--- !u!1 &1488530839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1488530840}
+  - component: {fileID: 1488530841}
+  m_Layer: 0
+  m_Name: Drill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1488530840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488530839}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000002592802, y: -0.382684, z: -0.9238793, w: 0.0000011064112}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2115144001}
+  m_LocalEulerAnglesHint: {x: -135, y: -180, z: 0}
+--- !u!114 &1488530841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488530839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd54107fc2d1b4045be9311bc717bbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Drill
+  vein: {fileID: 2115144002}
+  drillSpeed: 0.5
+  spawnPoint: {fileID: 1488530840}
+  spawnForce: 20
+  spinForce: 1
 --- !u!1 &1554436131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,37 +2680,6 @@ Transform:
   - {fileID: 1834442905}
   m_Father: {fileID: 1965153558}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!1 &1562298280
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1562298281}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1562298281
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562298280}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 1.51, z: 1.98}
-  m_LocalScale: {x: 0.55331093, y: 0.55331093, z: 0.55331093}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1911354911}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1649894085
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,53 +3069,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 2
---- !u!1 &1911354910
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1911354911}
-  - component: {fileID: 1911354912}
-  m_Layer: 0
-  m_Name: GeodeSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1911354911
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911354910}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1562298281}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1911354912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911354910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0cddcbe94156645982b5d2c9fbcd08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GeodeSpawner
-  spawnPoint: {fileID: 1562298281}
-  geodePrefab: {fileID: 1708172639210240638, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
 --- !u!1 &1929560507
 GameObject:
   m_ObjectHideFlags: 0
@@ -3385,67 +3356,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1554436132}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: -90}
---- !u!1001 &4121025451484981272
-PrefabInstance:
+--- !u!1 &2115144000
+GameObject:
   m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2115144001}
+  - component: {fileID: 2115144002}
+  m_Layer: 0
+  m_Name: Vein
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2115144001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115144000}
   serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1708172639210240638, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: newParent
-      value: 
-      objectReference: {fileID: 161221605}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.98
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6683134397536791348, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8799852634231450549, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
-      propertyPath: m_Name
-      value: GEODE
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1488530840}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2115144002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115144000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 852a0e248288f0b4ea15ff87832a8080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Vein
+  possibleGeodes:
+  - {fileID: 1708172639210240638, guid: 9fd326acee41e774ebbc9a2853667367, type: 3}
+  chances:
+  - 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3460,8 +3419,7 @@ SceneRoots:
   - {fileID: 623310124}
   - {fileID: 1878305729}
   - {fileID: 1649894089}
-  - {fileID: 4121025451484981272}
   - {fileID: 1896198391}
-  - {fileID: 1911354911}
   - {fileID: 644081344}
   - {fileID: 84494876}
+  - {fileID: 2115144001}
