@@ -14,6 +14,12 @@ public class Geode : MonoBehaviour {
 
     private void OnEnable() {
         _currentHealth = health;
+
+        Active.AddGeode(this);
+    }
+
+    private void OnDisable() {
+        Active.RemoveGeode(this);
     }
 
     [ContextMenu("Break")]
@@ -33,7 +39,11 @@ public class Geode : MonoBehaviour {
             rb.AddForce(randomDirection * randomForce, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * randomForce, ForceMode.Impulse);
 
-            if (children[i].TryGetComponent(out SellableItem sellableItem)) {
+
+            if (children[i].TryGetComponent(out GeodePart geodePart)) {
+                geodePart.StartDissapearTimer();
+
+            } else if (children[i].TryGetComponent(out SellableItem sellableItem)) {
                 sellableItem.insideGeode = false;
             }
         }
@@ -43,7 +53,7 @@ public class Geode : MonoBehaviour {
         CameraHolder.instance.BreakShake();
     }
 
-    public void Hit() {
+    public void Hit(Vector3 hitPoint, bool hitWall = false) {
         Cross.instance.CrossAnimation();
 
         _currentHealth -= Interactor.instance.hitDamage;
@@ -55,11 +65,29 @@ public class Geode : MonoBehaviour {
             CameraHolder.instance.HitShake();
             AudioManager.instance.PlayRockHit();
         }
+
+        if (!hitWall && Interactor.instance.hitArea == 1) { return; }
+
+        for (int i = 0; i < Active.geodes.Count; i++) {
+            Geode geode = Active.geodes[i];
+            if (geode == this) { continue; }
+
+            if (Vector3.Distance(hitPoint, geode.transform.position) <= Interactor.instance.hitArea) {
+                geode.HitByArea();
+            }
+        }
+    }
+
+    public void HitByArea() {
+        _currentHealth -= Interactor.instance.hitDamage;
+        if (_currentHealth <= 0) {
+            Break();
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
         if (isLaunched) {
-            Hit();
+            Hit(Vector3.zero, hitWall: true);
             isLaunched = false;
         }
     }

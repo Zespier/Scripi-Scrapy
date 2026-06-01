@@ -6,8 +6,8 @@ public class SellSpot : MonoBehaviour {
     public float sellDistance = 5;
 
     private void Update() {
-        for (int i = 0; i < SellableItem.activeSellableItems.Count; i++) {
-            SellableItem sellableItem = SellableItem.activeSellableItems[i];
+        for (int i = 0; i < Active.sellableItems.Count; i++) {
+            SellableItem sellableItem = Active.sellableItems[i];
 
             if (sellableItem.insideGeode) { continue; }
 

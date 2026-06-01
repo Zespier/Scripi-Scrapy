@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7767238665335631089}
   - component: {fileID: 4990384577540508552}
   - component: {fileID: 8766174156393556690}
+  - component: {fileID: 404870268355540031}
   m_Layer: 0
   m_Name: Icosphere_cell.002
   m_TagString: Untagged
@@ -113,6 +114,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3301159376018240456, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &404870268355540031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101763450508872104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &292837547024181376
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,6 +142,7 @@ GameObject:
   - component: {fileID: 3348771297119753575}
   - component: {fileID: 6333256745849968972}
   - component: {fileID: 7560213649303852501}
+  - component: {fileID: 8951204515865608566}
   m_Layer: 0
   m_Name: Icosphere_cell.009
   m_TagString: Untagged
@@ -226,6 +244,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3431969084667623022, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &8951204515865608566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292837547024181376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &1916672009521080911
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +272,7 @@ GameObject:
   - component: {fileID: 8205238824488121114}
   - component: {fileID: 4075219178759064661}
   - component: {fileID: 7852882664891819723}
+  - component: {fileID: 3511104867325476632}
   m_Layer: 0
   m_Name: Icosphere_cell.005
   m_TagString: Untagged
@@ -339,6 +374,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7420905741254926573, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &3511104867325476632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916672009521080911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &3442720900185393250
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +402,7 @@ GameObject:
   - component: {fileID: 4747835170487909544}
   - component: {fileID: 4891268033737564871}
   - component: {fileID: 5192094495022911290}
+  - component: {fileID: 6220386956137086148}
   m_Layer: 0
   m_Name: Icosphere_cell.006
   m_TagString: Untagged
@@ -452,6 +504,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 9028357558356193828, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &6220386956137086148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3442720900185393250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &4452636020878917435
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +532,7 @@ GameObject:
   - component: {fileID: 3618250033798880038}
   - component: {fileID: 5504772305568224015}
   - component: {fileID: 1487530457319638280}
+  - component: {fileID: 7047083631983477634}
   m_Layer: 0
   m_Name: Icosphere_cell
   m_TagString: Untagged
@@ -565,6 +634,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3075903766125179893, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &7047083631983477634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452636020878917435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &4475148173894451818
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +662,7 @@ GameObject:
   - component: {fileID: 3180501293630069295}
   - component: {fileID: 7536103047896562977}
   - component: {fileID: 9205479481296695269}
+  - component: {fileID: 17284821113375526}
   m_Layer: 0
   m_Name: Icosphere_cell.001
   m_TagString: Untagged
@@ -678,6 +764,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -331871654789393181, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &17284821113375526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475148173894451818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &4534306823771293122
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +792,7 @@ GameObject:
   - component: {fileID: 229749315117192441}
   - component: {fileID: 1735150948146338807}
   - component: {fileID: 1521456612600694332}
+  - component: {fileID: 1464333207249697222}
   m_Layer: 0
   m_Name: Icosphere_cell.011
   m_TagString: Untagged
@@ -791,6 +894,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1225693858080517242, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &1464333207249697222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4534306823771293122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &4887285332531137889
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,6 +922,7 @@ GameObject:
   - component: {fileID: 4895283269555012331}
   - component: {fileID: 497106505623648630}
   - component: {fileID: 1457486472377449039}
+  - component: {fileID: 5010254628515226228}
   m_Layer: 0
   m_Name: Icosphere_cell.013
   m_TagString: Untagged
@@ -904,6 +1024,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7124302991355998560, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &5010254628515226228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4887285332531137889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &5526767078565344649
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,6 +1052,7 @@ GameObject:
   - component: {fileID: 2694607412251925426}
   - component: {fileID: 2019344847610066546}
   - component: {fileID: 3197667032341176204}
+  - component: {fileID: 8780709830432377499}
   m_Layer: 0
   m_Name: Icosphere_cell.014
   m_TagString: Untagged
@@ -1017,6 +1154,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1652217032361554747, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &8780709830432377499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5526767078565344649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &5669094502101653086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1310,7 @@ GameObject:
   - component: {fileID: 1118804514649733394}
   - component: {fileID: 7060782740351363079}
   - component: {fileID: 1959926107911512180}
+  - component: {fileID: 8548027039718264820}
   m_Layer: 0
   m_Name: Icosphere_cell.010
   m_TagString: Untagged
@@ -1258,6 +1412,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2055828113373223782, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &8548027039718264820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213086378261578518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &6454711642362381904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1440,7 @@ GameObject:
   - component: {fileID: 9130101685256855196}
   - component: {fileID: 5611931706784000088}
   - component: {fileID: 3849252582069479451}
+  - component: {fileID: 7223564223252050236}
   m_Layer: 0
   m_Name: Icosphere_cell.008
   m_TagString: Untagged
@@ -1371,6 +1542,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6232419405057718252, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &7223564223252050236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454711642362381904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &6656484064772997861
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,6 +1570,7 @@ GameObject:
   - component: {fileID: 6628364977688780708}
   - component: {fileID: 2008427463256721964}
   - component: {fileID: 4484123871105797179}
+  - component: {fileID: 6464019029639463714}
   m_Layer: 0
   m_Name: Icosphere_cell.012
   m_TagString: Untagged
@@ -1484,6 +1672,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10952722745362422, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &6464019029639463714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6656484064772997861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &7612588800471213100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,6 +1700,7 @@ GameObject:
   - component: {fileID: 7295302636704842455}
   - component: {fileID: 8855925961798799114}
   - component: {fileID: 4863408248410893130}
+  - component: {fileID: 8570994657240783831}
   m_Layer: 0
   m_Name: Icosphere_cell.004
   m_TagString: Untagged
@@ -1597,6 +1802,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5458422319677487947, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &8570994657240783831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7612588800471213100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &7694999689829477741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,6 +1830,7 @@ GameObject:
   - component: {fileID: 3473360900933166520}
   - component: {fileID: 2539820725983187375}
   - component: {fileID: 5449530640686023703}
+  - component: {fileID: 8048689921516722345}
   m_Layer: 0
   m_Name: Icosphere_cell.018
   m_TagString: Untagged
@@ -1710,6 +1932,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1671561880842014023, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &8048689921516722345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694999689829477741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &8601615864382920995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,6 +1960,7 @@ GameObject:
   - component: {fileID: 5775470954514293405}
   - component: {fileID: 3338936084857523724}
   - component: {fileID: 2713754413530579616}
+  - component: {fileID: 295226488563257267}
   m_Layer: 0
   m_Name: Icosphere_cell.019
   m_TagString: Untagged
@@ -1823,6 +2062,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -739796502718171030, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &295226488563257267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8601615864382920995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &8736085864494273853
 GameObject:
   m_ObjectHideFlags: 0
@@ -1835,6 +2090,7 @@ GameObject:
   - component: {fileID: 6783404727911337900}
   - component: {fileID: 5089566808532669442}
   - component: {fileID: 3901985288008968885}
+  - component: {fileID: 810088383723498374}
   m_Layer: 0
   m_Name: Icosphere_cell.015
   m_TagString: Untagged
@@ -1936,6 +2192,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7961041137280646858, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &810088383723498374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8736085864494273853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &8755134856193759662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,6 +2220,7 @@ GameObject:
   - component: {fileID: 8794162209669335465}
   - component: {fileID: 7556104410094919133}
   - component: {fileID: 8272857730849819575}
+  - component: {fileID: 4132831667069353997}
   m_Layer: 0
   m_Name: Icosphere_cell.007
   m_TagString: Untagged
@@ -2049,6 +2322,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7136260454665377962, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &4132831667069353997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755134856193759662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &8773557048075142301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2061,6 +2350,7 @@ GameObject:
   - component: {fileID: 5162943723358863795}
   - component: {fileID: 2468680807778773351}
   - component: {fileID: 542590553769987233}
+  - component: {fileID: 5073101766011147772}
   m_Layer: 0
   m_Name: Icosphere_cell.003
   m_TagString: Untagged
@@ -2162,6 +2452,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3096243321241431071, guid: 4aa4df77577226b45a62dc4cb55d6a2b, type: 3}
+--- !u!114 &5073101766011147772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8773557048075142301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22acb967662693740b94fdfe5baa7737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeodePart
+  timeAlive: 3.5
+  timeOfIncreaseSize: 0.05
+  increseSizeAmount: 1.22
+  dissapearTime: 0.5
 --- !u!1 &8799852634231450549
 GameObject:
   m_ObjectHideFlags: 0

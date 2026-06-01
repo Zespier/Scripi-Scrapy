@@ -3,7 +3,6 @@ using UnityEngine;
 public class Drill : MonoBehaviour {
 
     public Vein vein;
-    public float drillSpeed = 0.5f;
     public Transform spawnPoint;
     public float spawnForce = 20f;
     public float spinForce = 1f;
@@ -11,8 +10,8 @@ public class Drill : MonoBehaviour {
     private float _timer;
 
     private void Update() {
-        if (Time.time - _timer >= 1f / drillSpeed) {
-            _timer = _timer + 1f / drillSpeed;
+        if (Time.time - _timer >= 1f / DrillStats.drillSpeed) {
+            _timer = _timer + 1f / DrillStats.drillSpeed;
             SpawnGeode();
         }
 
@@ -26,9 +25,15 @@ public class Drill : MonoBehaviour {
         newGeode.newParent = transform;
         newGeode.rb.AddForce(spawnPoint.forward * spawnForce, ForceMode.Impulse);
         newGeode.rb.AddTorque(Random.insideUnitSphere * spinForce, ForceMode.Impulse);
+
+        AudioManager.instance.PlayPop();
     }
 
     public void ResetTimer() {
         _timer = Time.time;
     }
+}
+
+public static class DrillStats {
+    public static float drillSpeed = 0.5f;
 }

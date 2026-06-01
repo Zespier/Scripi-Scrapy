@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour {
@@ -7,6 +8,9 @@ public class Interactor : MonoBehaviour {
     public float attackSpeed = 2f;
     public float timeToCancelHit = 0.9f;
     public float hitDamage = 1;
+    public List<float> hitDamageByLevels = new List<float>() { 1, 1.3f, 1.7f, 2.6f, 5 };
+    public float hitArea = 1;
+    public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
 
     private Rigidbody grabbedObject;
     private bool _isHitting;
@@ -134,7 +138,7 @@ public class Interactor : MonoBehaviour {
                     if (justCheck) {
                         return true;
                     }
-                    geode.Hit();
+                    geode.Hit(hits[i].point);
                     SetTimer();
                     return true;
 
@@ -146,7 +150,7 @@ public class Interactor : MonoBehaviour {
                         if (justCheck) {
                             return true;
                         }
-                        geodee.Hit();
+                        geodee.Hit(hits[i].point);
                         SetTimer();
                         return true;
                     }
