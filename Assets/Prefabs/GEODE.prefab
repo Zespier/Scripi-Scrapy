@@ -1144,6 +1144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SellableItem
   sellAmount: 13
+  insideGeode: 1
 --- !u!1 &6213086378261578518
 GameObject:
   m_ObjectHideFlags: 0

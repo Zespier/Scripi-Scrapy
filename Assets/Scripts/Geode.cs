@@ -10,7 +10,7 @@ public class Geode : MonoBehaviour {
     public bool isLaunched;
     public int health = 5;
 
-    private int _currentHealth;
+    private float _currentHealth;
 
     private void OnEnable() {
         _currentHealth = health;
@@ -32,6 +32,10 @@ public class Geode : MonoBehaviour {
 
             rb.AddForce(randomDirection * randomForce, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * randomForce, ForceMode.Impulse);
+
+            if (children[i].TryGetComponent(out SellableItem sellableItem)) {
+                sellableItem.insideGeode = false;
+            }
         }
 
         Destroy(gameObject);
@@ -42,7 +46,7 @@ public class Geode : MonoBehaviour {
     public void Hit() {
         Cross.instance.CrossAnimation();
 
-        _currentHealth--;
+        _currentHealth -= Interactor.instance.hitDamage;
         if (_currentHealth <= 0) {
             Break();
             AudioManager.instance.PlayRockBreak();

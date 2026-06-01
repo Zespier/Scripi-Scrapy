@@ -14,9 +14,17 @@ public class Money : MonoBehaviour {
         if (!instance) { instance = this; }
     }
 
+    public bool CanBuy(float amount) {
+        return currentMoney >= amount;
+    }
+
     public void AddMoney(float amount) {
         AudioManager.instance.PlayPop();
         currentMoney += amount;
         moneyText.text = $"{currentMoney.ToString("F0")}$";
+    }
+
+    public void SpendMoney(float amount) {
+        currentMoney -= amount;
     }
 }

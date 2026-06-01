@@ -9,6 +9,8 @@ public class SellSpot : MonoBehaviour {
         for (int i = 0; i < SellableItem.activeSellableItems.Count; i++) {
             SellableItem sellableItem = SellableItem.activeSellableItems[i];
 
+            if (sellableItem.insideGeode) { continue; }
+
             if (Vector3.Distance(transform.position, sellableItem.transform.position) < sellDistance) {
                 AudioManager.instance.PlayPop();
                 Money.instance.AddMoney(sellableItem.sellAmount);

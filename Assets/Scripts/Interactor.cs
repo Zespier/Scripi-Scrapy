@@ -6,12 +6,18 @@ public class Interactor : MonoBehaviour {
     public float launchForce = 10f;
     public float attackSpeed = 2f;
     public float timeToCancelHit = 0.9f;
+    public float hitDamage = 1;
 
     private Rigidbody grabbedObject;
     private bool _isHitting;
     private float _hitCancelTimer;
     private float _attackSpeedTimer;
     private bool _lastFrameHadGeodeBeingHit;
+
+    public static Interactor instance;
+    private void Awake() {
+        if (!instance) { instance = this; }
+    }
 
     protected virtual void SetTimer() {
         _attackSpeedTimer = !_lastFrameHadGeodeBeingHit ? Time.time : _attackSpeedTimer + 1f / attackSpeed;

@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour {
 
         _controls = new GameControls();
         _controls.Enable();
+    }
 
+    private void Start() {
         SetGameState(GameState.Playing);
         InputManager.instance.TrySetInputMode(InputMode.Character);
         MouseLock.LockMouse();
