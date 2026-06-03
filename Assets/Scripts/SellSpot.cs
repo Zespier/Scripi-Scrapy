@@ -14,6 +14,7 @@ public class SellSpot : MonoBehaviour {
             if (Vector3.Distance(transform.position, sellableItem.transform.position) < sellDistance) {
                 AudioManager.instance.PlayPop();
                 Money.instance.AddMoney(sellableItem.sellAmount);
+                SaveSystem.statistics.itemsSelled++;
                 Destroy(sellableItem.gameObject);
             }
         }

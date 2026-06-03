@@ -27,6 +27,7 @@ public class Drill : MonoBehaviour {
         newGeode.rb.AddTorque(Random.insideUnitSphere * spinForce, ForceMode.Impulse);
 
         AudioManager.instance.PlayPop();
+        SaveSystem.statistics.geodesGenerated++;
     }
 
     public void ResetTimer() {

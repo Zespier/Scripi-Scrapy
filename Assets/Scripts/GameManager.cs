@@ -3,23 +3,25 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public GameState debugState;
-
-    private GameControls _controls;
+    public bool saveOnDestroy = true;
 
     public static GameState gameState;
 
     public static GameManager instance;
     private void Awake() {
         if (!instance) { instance = this; }
-
-        _controls = new GameControls();
-        _controls.Enable();
     }
 
     private void Start() {
         SetGameState(GameState.Playing);
         InputManager.instance.TrySetInputMode(InputMode.Character);
         MouseLock.LockMouse();
+
+        SaveSystem.Load();
+    }
+
+    private void OnDestroy() {
+        SaveSystem.Save();
     }
 
     //Whatever happens when exiting a game state
@@ -65,6 +67,6 @@ public class GameManager : MonoBehaviour {
 public enum GameState : byte {
     Playing, //The player is in the most basic state of the game, usually you can transition to any state or Input mode from here
     InInterface, //Basically any interface that allows input interaction
-    InCinematic, //Interfaces without interaction. Can't pause during a cinematic.
+    InCinematic, //Interfaces without interaction. Can't pause during a cinematic. Includes states like Dying or Winning, since you are watching the animations of Skuld, before showing the Endgame Screen
 }
 //TODO: Task list shows the number of this line, I'm interested in seeing the total amount of lines my game has, so I will put this in the last line of every script I find.

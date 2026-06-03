@@ -48,17 +48,19 @@ public class Geode : MonoBehaviour {
             }
         }
 
-        Destroy(gameObject);
-
+        SaveSystem.statistics.geodesBroken++;
         CameraHolder.instance.BreakShake();
+
+        Destroy(gameObject);
     }
 
-    public void Hit(Vector3 hitPoint, bool hitWall = false) {
+    public void Hit(Vector3 hitPoint, bool hitWall = false, bool manualHit = false) {
         Cross.instance.CrossAnimation();
 
         _currentHealth -= Interactor.instance.hitDamage;
         if (_currentHealth <= 0) {
             Break();
+            if (!manualHit) { SaveSystem.statistics.geodesBrokenWithAutomaticGear++; }
             AudioManager.instance.PlayRockBreak();
 
         } else {
@@ -79,9 +81,11 @@ public class Geode : MonoBehaviour {
     }
 
     public void HitByArea() {
+        SaveSystem.statistics.CollateralHit();
         _currentHealth -= Interactor.instance.hitDamage;
         if (_currentHealth <= 0) {
             Break();
+            SaveSystem.statistics.geodesBrokenByCollateralDamage++;
         }
     }
 

@@ -148,13 +148,6 @@ public class InputManager : MonoBehaviour {
         return true;
     }
 
-    public void DisableInputsForCinematic() {
-        SetInputMode(InputMode.None);
-    }
-    public void RecoverInputsAfterCinematic() {
-        SetInputMode(InputMode.Character);
-    }
-
     private void OnInputDeviceChange(InputUser user, InputUserChange change, InputDevice device) {
         if (change == InputUserChange.ControlSchemeChanged) {
 

@@ -11,7 +11,7 @@ public class Interactor : MonoBehaviour {
     public List<float> hitDamageByLevels = new List<float>() { 1, 1.3f, 1.7f, 2.6f, 5 };
     public float hitArea = 1;
     public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
-
+     
     private Rigidbody grabbedObject;
     private bool _isHitting;
     private float _hitCancelTimer;
@@ -33,7 +33,7 @@ public class Interactor : MonoBehaviour {
         }
 
         if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
-            Hit();
+            Hit(manualHit: true);
         }
 
         if (InputManager.GameControls.Character.Jump.WasPressedThisFrame()) {
@@ -48,6 +48,7 @@ public class Interactor : MonoBehaviour {
 
         if (_isHitting && Time.time - _attackSpeedTimer >= 1f / attackSpeed) {
             if (Hit()) {
+                SaveSystem.statistics.automaticHits++;
                 _hitCancelTimer = Time.time;
                 return;
             }
@@ -123,7 +124,7 @@ public class Interactor : MonoBehaviour {
         }
     }
 
-    public bool Hit(bool justCheck = false) {
+    public bool Hit(bool manualHit = false, bool justCheck = false) {
 
         RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
 
@@ -135,10 +136,10 @@ public class Interactor : MonoBehaviour {
                 Rigidbody rigidbody = hits[i].collider.GetComponent<Rigidbody>();
                 if (rigidbody != null && rigidbody.TryGetComponent(out Geode geode)) {
 
-                    if (justCheck) {
-                        return true;
-                    }
-                    geode.Hit(hits[i].point);
+                    if (justCheck) { return true; }
+                    SaveSystem.statistics.Hit(manualHit: manualHit);
+
+                    geode.Hit(hits[i].point, manualHit: manualHit);
                     SetTimer();
                     return true;
 
@@ -147,10 +148,10 @@ public class Interactor : MonoBehaviour {
                     rigidbody = hits[i].collider.transform.parent.GetComponentInChildren<Rigidbody>();
                     if (rigidbody != null && rigidbody.TryGetComponent(out Geode geodee)) {
 
-                        if (justCheck) {
-                            return true;
-                        }
-                        geodee.Hit(hits[i].point);
+                        if (justCheck) { return true; }
+                        SaveSystem.statistics.Hit(manualHit: manualHit);
+
+                        geodee.Hit(hits[i].point, manualHit: manualHit);
                         SetTimer();
                         return true;
                     }

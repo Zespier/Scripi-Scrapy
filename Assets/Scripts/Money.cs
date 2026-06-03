@@ -21,10 +21,16 @@ public class Money : MonoBehaviour {
     public void AddMoney(float amount) {
         AudioManager.instance.PlayPop();
         currentMoney += amount;
+        SaveSystem.statistics.moneyGained += amount;
         moneyText.text = $"{currentMoney.ToString("F0")}$";
     }
 
     public void SpendMoney(float amount) {
         currentMoney -= amount;
+        SaveSystem.statistics.moneySpent += amount;
+    }
+
+    public void LoadMoney(SaveData saveData) {
+        currentMoney = saveData.money;
     }
 }
