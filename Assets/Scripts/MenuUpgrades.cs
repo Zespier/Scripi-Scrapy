@@ -11,16 +11,8 @@ public class MenuUpgrades : MonoBehaviour {
     public TMP_Text drillSpeedCostText;
     public TMP_Text hitAreaCostText;
 
-    public List<UpgradeData> upgrades = new List<UpgradeData> {
-        new UpgradeData("HitDamage_1",UpgradeType.HitDamage, false),
-        new UpgradeData("DrillSpeed_1",UpgradeType.DrillSpeed, false),
-        new UpgradeData("HitArea_1",UpgradeType.HitArea, false),
-        new UpgradeData("HandDrill",UpgradeType.HandDrill, false),
-        new UpgradeData("HandDrillSpeed_1",UpgradeType.HandDrillSpeed, false),
-    };
-
-    public bool pressedP;
-    public bool pressedO;
+    public List<UpgradeData> upgrades;
+    public List<UpgradeButton> upgradeButtons;
 
     public static MenuUpgrades instance;
     private void Awake() {
@@ -45,10 +37,18 @@ public class MenuUpgrades : MonoBehaviour {
         if (InputManager.GameControls.Character.ChangeSkin.WasPressedThisFrame()) {
             Money.instance.currentMoney++;
             Money.instance.currentMoney *= 10;
-            Money.instance.moneyText.text = $"{Money.instance.currentMoney.ToString("F0")}$";
         }
 
         CheckGameReset();
+    }
+
+    [ContextMenu("Reposition Buttons")]
+    public void RepositionUpgradeButtons() {
+
+        Vector3 center = Vector3.zero;
+        Vector2 size = upgradeButtons[0].rectTransform.sizeDelta;
+
+        //Los puedo poner como en zigzag por filas, para que parezca una especie de tablero rollo hexagonal, y luego ya mover las weas más a mano si quiero.
     }
 
     public int GetUpgradeLevel(UpgradeType type) {
@@ -68,92 +68,43 @@ public class MenuUpgrades : MonoBehaviour {
         canvasGroup.blocksRaycasts = active;
     }
 
-    public void UpgradeHit1Damage() {
-        if (Money.instance.CanBuy(UpgradesCost.hitDamage1Cost)) {
-            Money.instance.SpendMoney(UpgradesCost.hitDamage1Cost);
+    public void Upgrade(UpgradeData upgradeData) {
+        if (Money.instance.CanBuy(upgradeData.cost)) {
+            Money.instance.SpendMoney(upgradeData.cost);
 
             for (int i = 0; i < upgrades.Count; i++) {
-                if (upgrades[i].id == "HitDamage_1") {
+                if (upgrades[i].id == upgradeData.id) {
                     upgrades[i].isUnlocked = true;
                     break;
                 }
             }
+        }
 
-            Interactor.instance.hitDamage = Interactor.instance.hitDamageByLevels[GetUpgradeLevel(UpgradeType.HitDamage)];
+        ApplyUpgradeEffect(upgradeData);
+    }
 
-            Money.instance.moneyText.text = $"{Money.instance.currentMoney.ToString("F0")}$";
+    public void ApplyUpgradeEffect(UpgradeData upgradeData) {
+        switch (upgradeData.type) {
+            case UpgradeType.HandDrill:
+                HandDrillStats.isUnlocked = upgradeData.isUnlocked;
+                break;
+            case UpgradeType.HitDamage:
+            case UpgradeType.DrillSpeed:
+            case UpgradeType.HitArea:
+            case UpgradeType.HandDrillSpeed:
+            case UpgradeType.BetterGeodes:
+            default:
+                break;
         }
     }
 
-    public void UpgradeDrillSpeed() {
-        if (Money.instance.CanBuy(UpgradesCost.drillSpeed1Cost)) {
-            Money.instance.SpendMoney(UpgradesCost.drillSpeed1Cost);
-
-            for (int i = 0; i < upgrades.Count; i++) {
-                if (upgrades[i].id == "HitDamage_1") {
-                    upgrades[i].isUnlocked = true;
-                    break;
-                }
-            }
-
-            DrillStats.drillSpeed *= 1.5f;
-
-            Money.instance.moneyText.text = $"{Money.instance.currentMoney.ToString("F0")}$";
-        }
-    }
-
-    public void UpgradeHitArea() {
-        if (Money.instance.CanBuy(hitAreaCostt)) {
-            Money.instance.SpendMoney(hitAreaCostt);
-
-            if (hitAreaLevel >= Interactor.instance.hitAreaByLevels.Count) {
-                Interactor.instance.hitArea = float.MaxValue;
-
-            } else {
-                Interactor.instance.hitArea = Interactor.instance.hitAreaByLevels[hitAreaLevel];
-            }
-
-            hitAreaLevel++;
-            hitAreaCostt = Mathf.Pow(hitAreaCostt, 1.05f);
-            hitAreaCostText.text = hitAreaCostt.ToString("F0") + "$";
-            Money.instance.moneyText.text = $"{Money.instance.currentMoney.ToString("F0")}$";
-        }
-    }
-
-    #region GameReset
     public void CheckGameReset() {
+        if (Keyboard.current.pKey.isPressed && Keyboard.current.oKey.isPressed && Keyboard.current.iKey.isPressed) {
 
-        if (pressedP && pressedO && Keyboard.current.iKey.wasPressedThisFrame) {
-            ResetGame();
-        } else {
-            pressedP = false;
-            pressedO = false;
-        }
-        if (pressedP && Keyboard.current.oKey.wasPressedThisFrame) {
-            pressedO = true;
-        } else {
-            pressedP = false;
-            pressedO = false;
-        }
-        if (Keyboard.current.pKey.wasPressedThisFrame) {
-            pressedP = true;
-        } else {
-            pressedP = false;
+            GameManager.instance.saveOnDestroy = false;
+            SaveSystem.DeleteSaveFile();
+
+            SceneManager.LoadScene(0);
         }
     }
-
-    public void ResetGame() {
-        GameManager.instance.saveOnDestroy = false;
-        SaveSystem.DeleteSaveFile();
-
-        SceneManager.LoadScene(0);
-    }
-
-    #endregion
-}
-
-public static class UpgradesCost {
-    public static readonly int hitDamage1Cost = 10;
-    public static readonly int drillSpeed1Cost = 30;
-    public static readonly int hitArea1Cost = 50;
 }

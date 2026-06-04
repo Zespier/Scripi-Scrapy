@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Money : MonoBehaviour {
 
-    //Se me ocurre para la animacion, que 
-
     public TMP_Text moneyText;
     public float currentMoney;
 
@@ -12,6 +10,10 @@ public class Money : MonoBehaviour {
 
     private void Awake() {
         if (!instance) { instance = this; }
+    }
+
+    private void Update() {
+        moneyText.text = $"{currentMoney.ToString("F0")}$";
     }
 
     public bool CanBuy(float amount) {
@@ -22,7 +24,6 @@ public class Money : MonoBehaviour {
         AudioManager.instance.PlayPop();
         currentMoney += amount;
         SaveSystem.statistics.moneyGained += amount;
-        moneyText.text = $"{currentMoney.ToString("F0")}$";
     }
 
     public void SpendMoney(float amount) {

@@ -2480,7 +2480,7 @@ GameObject:
   - component: {fileID: 7465482865203465561}
   - component: {fileID: 1708172639210240638}
   m_Layer: 0
-  m_Name: GEODE
+  m_Name: GEODE_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2583,4 +2583,4 @@ MonoBehaviour:
   - {fileID: 5669094502101653086}
   newParent: {fileID: 0}
   isLaunched: 0
-  health: 5
+  health: 6

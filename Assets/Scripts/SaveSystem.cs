@@ -33,13 +33,7 @@ public class SaveSystem {
     }
 
     private static void SaveUpgrades(SaveData saveData) {
-        saveData.upgrades = new List<UpgradeData> {
-        new UpgradeData(UpgradeType.HitDamage, MenuUpgrades.instance.hitLevel > 1),
-        new UpgradeData(UpgradeType.DrillSpeed, DrillStats.drillSpeed > 0.5f),
-        new UpgradeData(UpgradeType.HitArea, MenuUpgrades.instance.hitAreaLevel > 1),
-        new UpgradeData(UpgradeType.HandDrill, HandDrillStats.isUnlocked),
-        new UpgradeData(UpgradeType.HandDrillSpeed, HandDrillStats.handDrillSpeed > 5),
-    };
+        saveData.upgrades = MenuUpgrades.instance.upgrades;
     }
 
     #endregion
@@ -62,6 +56,7 @@ public class SaveSystem {
             if (!_ignorePlayerSaves) {
                 Money.instance.LoadMoney(saveData);
                 LoadStatistics(saveData);
+                LoadUpgrades(saveData);
             }
         }
     }
@@ -73,15 +68,15 @@ public class SaveSystem {
     }
 
     private static void LoadUpgrades(SaveData saveData) {
-        saveData.upgrades = new List<UpgradeData> {
-        new UpgradeData(UpgradeType.HitDamage, MenuUpgrades.instance.hitLevel > 1),
-        new UpgradeData(UpgradeType.DrillSpeed, DrillStats.drillSpeed > 0.5f),
-        new UpgradeData(UpgradeType.HitArea, MenuUpgrades.instance.hitAreaLevel > 1),
-        new UpgradeData(UpgradeType.HandDrill, HandDrillStats.isUnlocked),
-        new UpgradeData(UpgradeType.HandDrillSpeed, HandDrillStats.handDrillSpeed > 5),
-    };
 
-        MenuUpgrades.instance.hitLevel
+        for (int i = 0; i < saveData.upgrades.Count; i++) {
+            for (int j = 0; j < MenuUpgrades.instance.upgrades.Count; j++) {
+                if (saveData.upgrades[i].id == MenuUpgrades.instance.upgrades[j].id) {
+                    MenuUpgrades.instance.upgrades[j].isUnlocked = saveData.upgrades[i].isUnlocked;
+                    MenuUpgrades.instance.ApplyUpgradeEffect(saveData.upgrades[i]);
+                }
+            }
+        }
     }
 
     #endregion
@@ -93,13 +88,7 @@ public class SaveData {
 
     public float money;
     public PlayerStatistics statistics;
-    public List<UpgradeData> upgrades = new List<UpgradeData> {
-        new UpgradeData("HitDamage_1",UpgradeType.HitDamage, false),
-        new UpgradeData("DrillSpeed_1",UpgradeType.DrillSpeed, false),
-        new UpgradeData("HitArea_1",UpgradeType.HitArea, false),
-        new UpgradeData("HandDrill",UpgradeType.HandDrill, false),
-        new UpgradeData("HandDrillSpeed_1",UpgradeType.HandDrillSpeed, false),
-    };
+    public List<UpgradeData> upgrades = new();
 }
 
 [System.Serializable]
@@ -109,20 +98,7 @@ public enum UpgradeType {
     HitArea = 2,
     HandDrill = 3,
     HandDrillSpeed = 4,
-}
-
-[System.Serializable]
-public class UpgradeData {
-    public string id;
-    public UpgradeType type;
-    //public int value;
-    public bool isUnlocked;
-
-    public UpgradeData(string id, UpgradeType type, bool isUnlocked) {
-        this.id = id;
-        this.type = type;
-        this.isUnlocked = isUnlocked;
-    }
+    BetterGeodes = 5,
 }
 
 [System.Serializable]

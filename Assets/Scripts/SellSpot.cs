@@ -11,12 +11,15 @@ public class SellSpot : MonoBehaviour {
 
             if (sellableItem.insideGeode) { continue; }
 
-            if (Vector3.Distance(transform.position, sellableItem.transform.position) < sellDistance) {
+            if (transform.position.DistanceSquared(sellableItem.transform.position) < sellDistance * sellDistance) {
                 AudioManager.instance.PlayPop();
                 Money.instance.AddMoney(sellableItem.sellAmount);
                 SaveSystem.statistics.itemsSelled++;
                 Destroy(sellableItem.gameObject);
+                break;
             }
         }
+
+        //TODO: This makes bad fps a nightmare to sell, but it shouldn't reach that point, right?
     }
 }

@@ -8,9 +8,11 @@ public class Geode : MonoBehaviour {
     public List<GameObject> children;
     public Transform newParent;
     public bool isLaunched;
-    public int health = 5;
+    public int health = 4;
 
     private float _currentHealth;
+    private bool _wasHitForTheFirstTime;
+    private ParticleFeedback _cantBreakThisGeodeFeedback;
 
     private void OnEnable() {
         _currentHealth = health;
@@ -20,6 +22,11 @@ public class Geode : MonoBehaviour {
 
     private void OnDisable() {
         Active.RemoveGeode(this);
+    }
+
+    public void ResetVariables() {
+        _currentHealth = health;
+        _wasHitForTheFirstTime = false;
     }
 
     [ContextMenu("Break")]
@@ -55,9 +62,20 @@ public class Geode : MonoBehaviour {
     }
 
     public void Hit(Vector3 hitPoint, bool hitWall = false, bool manualHit = false) {
+        if (health - MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage) >= 10) {
+
+            if (_cantBreakThisGeodeFeedback == null || _cantBreakThisGeodeFeedback.Deactivated) {
+                _cantBreakThisGeodeFeedback = FeedbackController.instance.PlayParticle(ParticleType.CantBreakGeode, transform.position + Vector3.up * 1.1f, Vector3.forward);
+            }
+
+
+            return;
+        }
+
         Cross.instance.CrossAnimation();
 
-        _currentHealth -= Interactor.instance.hitDamage;
+        ReduceHealth();
+
         if (_currentHealth <= 0) {
             Break();
             if (!manualHit) { SaveSystem.statistics.geodesBrokenWithAutomaticGear++; }
@@ -68,24 +86,37 @@ public class Geode : MonoBehaviour {
             AudioManager.instance.PlayRockHit();
         }
 
-        if (!hitWall && Interactor.instance.hitArea == 1) { return; }
+        if (!hitWall && Interactor.instance.HitArea == 1) { return; }
 
         for (int i = 0; i < Active.geodes.Count; i++) {
             Geode geode = Active.geodes[i];
             if (geode == this) { continue; }
 
-            if (Vector3.Distance(hitPoint, geode.transform.position) <= Interactor.instance.hitArea) {
+            if (hitPoint.DistanceSquared(geode.transform.position) < Interactor.instance.HitArea * Interactor.instance.HitArea) {
                 geode.HitByArea();
             }
         }
     }
 
     public void HitByArea() {
+        if (health - MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage) >= 10) { return; }
+
         SaveSystem.statistics.CollateralHit();
-        _currentHealth -= Interactor.instance.hitDamage;
+        ReduceHealth();
+
         if (_currentHealth <= 0) {
             Break();
             SaveSystem.statistics.geodesBrokenByCollateralDamage++;
+        }
+    }
+
+    private void ReduceHealth() {
+        if (!_wasHitForTheFirstTime) {
+            _wasHitForTheFirstTime = true;
+            _currentHealth -= Interactor.instance.FirstHitDamage;
+
+        } else {
+            _currentHealth--;
         }
     }
 
