@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour {
 
+    public float interactionDistance = 6;
     public float grabDistanceFromCamera = 4f;
     public float launchForce = 10f;
     public float attackSpeed = 2f;
@@ -10,11 +11,12 @@ public class Interactor : MonoBehaviour {
     public List<int> hitDamageByLevelss = new List<int>() { 1, 4, 9, 13, 18, 21 };
     public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
 
-    private Rigidbody grabbedObject;
+    private Stack<GrabableItem> grabbedObjects;
     private bool _isHitting;
     private float _hitCancelTimer;
     private float _attackSpeedTimer;
     private bool _lastFrameHadGeodeBeingHit;
+    private RaycastHit[] _hits = new RaycastHit[10];
 
     //Primer golpe es fuerte, los demás solo 1
     public int FirstHitDamage => MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage);
@@ -63,6 +65,11 @@ public class Interactor : MonoBehaviour {
         _lastFrameHadGeodeBeingHit = thereIsGeodeInFront;
     }
 
+    //La idea es que coja algo, ese algo final se quede flotando delante del jugador, y lo demás se meta como pila de platos en un "inventario"
+    //Vale pero como lo programo? Voy primero a hacer la lógica de la lista creo, y ya veo que hago
+    //En principio es una lista, voy a meterlo todo pa entro.
+    //Cuando entra un tipo nuevo, aparece un cuadradito abajo, cuando aparece otro nuevo, se cuadran para mantenerse centrados en pantalla, y se van acumulando muchos, yo creo que eso puede ser satisfactorio.
+
     private void FixedUpdate() {
         if (grabbedObject != null) {
             grabbedObject.useGravity = false;
@@ -79,6 +86,30 @@ public class Interactor : MonoBehaviour {
     }
 
     public void Interact() {
+
+        int totalHits = Physics.RaycastNonAlloc(Camera.main.transform.position, Camera.main.transform.forward, _hits, interactionDistance);
+
+        for (int i = totalHits; i < _hits.Length; i++) {
+            _hits[i] = default;
+        }
+
+        for (int i = 0; i < totalHits; i++) {
+            if (_hits[i].collider.CompareTag("Player")) { continue; }
+
+            if (_hits[i].collider.TryGetComponent(out GrabableItem grabableItem)) {
+                //ME QUEDA POR HACER
+                /*
+                 * Las geodas ocupan un hueco entero de inventario
+                 * Las otras gemas o piedras ocupan por ejemplo hasta ocupar 20, y luego pasan al siguiente stack, esto hace que al romper más geodas y conseguir minerales nuevos, te haga querer comprarte la mejora de mejores bolsillos, y eso tambíen hace que el segundo clímax del juego vaya aumentando.
+                 * Luego, con la E, agarro una wea, y si pulso otra vez E, NO SE
+                 * Con el botón derecho se hace en el slime rancher, así qeu voy a probar botón derecho + E, las dos cosas, y soltar con el izquierdo, y hasta que no dejes de tener los bolsillos llenos no puedes pegar, básicamente con cosas en las manos no puedes pegar, de todas formas acabarías tirando todo lo que tienes en las manos con tal de quedarte con las manos vacías para poder pegar a la piedra.
+                 * 
+                 * As´que en vez de ver si estoy dándole al grabbed object, mmiro si tengo algo en la lista de platos, lo tiro, y si no tengo, golpeo, sencillo.
+                 * 
+                 * Con la ruedecilla del ratón te mueves entre un slot de inventario u otro, no sé si esto servirá para algo, pero está guay.
+                 */
+            }
+        }
 
         RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
 
