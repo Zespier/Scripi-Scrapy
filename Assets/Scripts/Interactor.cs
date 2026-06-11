@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour {
@@ -11,12 +12,13 @@ public class Interactor : MonoBehaviour {
     public List<int> hitDamageByLevelss = new List<int>() { 1, 4, 9, 13, 18, 21 };
     public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
 
-    private Stack<GrabableItem> grabbedObjects;
+    private Stack<GrabableItem> grabbedObjects = new Stack<GrabableItem>();
     private bool _isHitting;
     private float _hitCancelTimer;
     private float _attackSpeedTimer;
     private bool _lastFrameHadGeodeBeingHit;
     private RaycastHit[] _hits = new RaycastHit[10];
+    private GrabableItem _lastVisualItem;
 
     //Primer golpe es fuerte, los demás solo 1
     public int FirstHitDamage => MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage);
@@ -32,26 +34,36 @@ public class Interactor : MonoBehaviour {
     }
 
     private void Update() {
-        if (InputManager.GameControls.Character.Interact.WasPressedThisFrame()) {
-            Interact();
+
+        //First active the cross if something is in front;
+        GrabableItem itemInFront = GetItemInFront();
+        for (int i = 0; i < Cross.instance.parts.Count; i++) {
+            Cross.instance.parts[i].gameObject.SetActive(itemInFront != null);
         }
 
+
         if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
-            Hit(manualHit: true);
+
+            if (grabbedObjects.Count > 0) {
+                Launch();
+
+            } else if (itemInFront != null && itemInFront is Geode geode) {
+                Hit(geode, geode.pointOfInteraction, manualHit: true);
+            }
+        }
+
+        if (InputManager.GameControls.Character.Interact.WasPressedThisFrame() && itemInFront != null) {
+            Interact(itemInFront);
         }
 
         if (InputManager.GameControls.Character.Jump.WasPressedThisFrame()) {
             StartHitting();
         }
 
-        bool thereIsGeodeInFront = Hit(justCheck: true);
-
-        for (int i = 0; i < Cross.instance.parts.Count; i++) {
-            Cross.instance.parts[i].gameObject.SetActive(thereIsGeodeInFront);
-        }
-
         if (_isHitting && Time.time - _attackSpeedTimer >= 1f / attackSpeed) {
-            if (Hit()) {
+
+            if (itemInFront != null && itemInFront is Geode geode) { //Check if the geode got hit
+                Hit(geode, geode.pointOfInteraction);
                 SaveSystem.statistics.automaticHits++;
                 _hitCancelTimer = Time.time;
                 return;
@@ -62,21 +74,36 @@ public class Interactor : MonoBehaviour {
             }
         }
 
-        _lastFrameHadGeodeBeingHit = thereIsGeodeInFront;
-    }
+        _lastFrameHadGeodeBeingHit = itemInFront;
 
-    //La idea es que coja algo, ese algo final se quede flotando delante del jugador, y lo demás se meta como pila de platos en un "inventario"
-    //Vale pero como lo programo? Voy primero a hacer la lógica de la lista creo, y ya veo que hago
-    //En principio es una lista, voy a meterlo todo pa entro.
-    //Cuando entra un tipo nuevo, aparece un cuadradito abajo, cuando aparece otro nuevo, se cuadran para mantenerse centrados en pantalla, y se van acumulando muchos, yo creo que eso puede ser satisfactorio.
+        #region Behaviour Of Grabbed Object
 
-    private void FixedUpdate() {
-        if (grabbedObject != null) {
-            grabbedObject.useGravity = false;
-            grabbedObject.linearVelocity = Vector3.zero;
-            grabbedObject.angularVelocity = Vector3.zero;
-            grabbedObject.MovePosition(Camera.main.transform.position + Camera.main.transform.forward * grabDistanceFromCamera);
+        if (grabbedObjects.Count > 0) {
+
+            GrabableItem visualItem = grabbedObjects.Peek();
+
+            foreach (GrabableItem item in grabbedObjects) {
+                if (item == visualItem) { continue; }
+                item.Hide();
+            }
+
+            if (_lastVisualItem != null && _lastVisualItem != visualItem) {
+                //_lastVisualItem.Hide();
+            }
+
+            visualItem.Show();
+            visualItem.rb.isKinematic = true;
+            visualItem.rb.linearVelocity = Vector3.zero;
+            visualItem.rb.angularVelocity = Vector3.zero;
+            visualItem.transform.position = (Camera.main.transform.position + Camera.main.transform.forward * grabDistanceFromCamera);
+
+            _lastVisualItem = visualItem;
+
+        } else {
+            _lastVisualItem = null;
         }
+
+        #endregion
     }
 
     public void StartHitting() {
@@ -85,8 +112,39 @@ public class Interactor : MonoBehaviour {
         _lastFrameHadGeodeBeingHit = false;
     }
 
-    public void Interact() {
+    public void Launch() {
 
+        GrabableItem grabableItem = grabbedObjects.Pop();
+
+        grabableItem.rb.isKinematic = false;
+        grabableItem.rb.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
+
+        if (grabableItem is Geode geode) {
+            geode.isLaunched = true;
+        }
+    }
+
+    public void Interact(GrabableItem grabableItem) {
+
+        if (grabableItem.geodeParent != null) { //If it's inside geode grab the geode
+            grabableItem = grabableItem.geodeParent;
+        }
+        grabbedObjects.Push(grabableItem);
+
+        //ME QUEDA POR HACER
+        /*
+         * Las geodas ocupan un hueco entero de inventario
+         * Las otras gemas o piedras ocupan por ejemplo hasta ocupar 20, y luego pasan al siguiente stack, esto hace que al romper más geodas y conseguir minerales nuevos, te haga querer comprarte la mejora de mejores bolsillos, y eso tambíen hace que el segundo clímax del juego vaya aumentando.
+         * Luego, con la E, agarro una wea, y si pulso otra vez E, NO SE
+         * Con el botón derecho se hace en el slime rancher, así qeu voy a probar botón derecho + E, las dos cosas, y soltar con el izquierdo, y hasta que no dejes de tener los bolsillos llenos no puedes pegar, básicamente con cosas en las manos no puedes pegar, de todas formas acabarías tirando todo lo que tienes en las manos con tal de quedarte con las manos vacías para poder pegar a la piedra.
+         * 
+         * As´que en vez de ver si estoy dándole al grabbed object, mmiro si tengo algo en la lista de platos, lo tiro, y si no tengo, golpeo, sencillo.
+         * 
+         * Con la ruedecilla del ratón te mueves entre un slot de inventario u otro, no sé si esto servirá para algo, pero está guay.
+         */
+    }
+
+    public GrabableItem GetItemInFront() {
         int totalHits = Physics.RaycastNonAlloc(Camera.main.transform.position, Camera.main.transform.forward, _hits, interactionDistance);
 
         for (int i = totalHits; i < _hits.Length; i++) {
@@ -97,101 +155,23 @@ public class Interactor : MonoBehaviour {
             if (_hits[i].collider.CompareTag("Player")) { continue; }
 
             if (_hits[i].collider.TryGetComponent(out GrabableItem grabableItem)) {
-                //ME QUEDA POR HACER
-                /*
-                 * Las geodas ocupan un hueco entero de inventario
-                 * Las otras gemas o piedras ocupan por ejemplo hasta ocupar 20, y luego pasan al siguiente stack, esto hace que al romper más geodas y conseguir minerales nuevos, te haga querer comprarte la mejora de mejores bolsillos, y eso tambíen hace que el segundo clímax del juego vaya aumentando.
-                 * Luego, con la E, agarro una wea, y si pulso otra vez E, NO SE
-                 * Con el botón derecho se hace en el slime rancher, así qeu voy a probar botón derecho + E, las dos cosas, y soltar con el izquierdo, y hasta que no dejes de tener los bolsillos llenos no puedes pegar, básicamente con cosas en las manos no puedes pegar, de todas formas acabarías tirando todo lo que tienes en las manos con tal de quedarte con las manos vacías para poder pegar a la piedra.
-                 * 
-                 * As´que en vez de ver si estoy dándole al grabbed object, mmiro si tengo algo en la lista de platos, lo tiro, y si no tengo, golpeo, sencillo.
-                 * 
-                 * Con la ruedecilla del ratón te mueves entre un slot de inventario u otro, no sé si esto servirá para algo, pero está guay.
-                 */
-            }
-        }
+                if (grabbedObjects.Contains(grabableItem)) { continue; }
+                if (grabableItem.geodeParent != null && grabbedObjects.Contains(grabableItem.geodeParent)) { continue; }
 
-        RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
-
-        for (int i = 0; i < hits.Length; i++) {
-
-            if (hits[i].collider != null) {
-                if (hits[i].collider.CompareTag("Player")) { continue; }
-
-                Rigidbody rigidbody = hits[i].collider.GetComponent<Rigidbody>();
-                if (rigidbody != null) {
-
-                    if (grabbedObject == rigidbody) {
-                        grabbedObject.useGravity = true;
-                        grabbedObject = null;
-                        rigidbody.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
-
-
-                    } else {
-                        grabbedObject = rigidbody;
-                    }
-                    //geode.Hit();
-                    break;
-                } else {
-
-                    rigidbody = hits[i].collider.transform.parent.GetComponentInChildren<Rigidbody>();
-                    if (rigidbody != null) {
-
-                        Geode geode = rigidbody.GetComponent<Geode>();
-                        if (geode != null) {
-                            if (grabbedObject == geode.rb) {
-                                grabbedObject.useGravity = true;
-                                grabbedObject = null;
-                                geode.rb.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
-                                geode.isLaunched = true;
-
-
-                            } else {
-                                grabbedObject = geode.rb;
-                            }
-                        }
-                        break;
-                    }
+                if (grabableItem.geodeParent != null) {
+                    grabableItem = grabableItem.geodeParent;
                 }
+                grabableItem.pointOfInteraction = _hits[i].point;
+                return grabableItem;
             }
         }
+
+        return null;
     }
 
-    public bool Hit(bool manualHit = false, bool justCheck = false) {
-
-        RaycastHit[] hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward);
-
-        for (int i = 0; i < hits.Length; i++) {
-
-            if (hits[i].collider != null) {
-                if (hits[i].collider.CompareTag("Player")) { continue; }
-
-                Rigidbody rigidbody = hits[i].collider.GetComponent<Rigidbody>();
-                if (rigidbody != null && rigidbody.TryGetComponent(out Geode geode)) {
-
-                    if (justCheck) { return true; }
-                    SaveSystem.statistics.Hit(manualHit: manualHit);
-
-                    geode.Hit(hits[i].point, manualHit: manualHit);
-                    SetTimer();
-                    return true;
-
-                } else {
-
-                    rigidbody = hits[i].collider.transform.parent.GetComponentInChildren<Rigidbody>();
-                    if (rigidbody != null && rigidbody.TryGetComponent(out Geode geodee)) {
-
-                        if (justCheck) { return true; }
-                        SaveSystem.statistics.Hit(manualHit: manualHit);
-
-                        geodee.Hit(hits[i].point, manualHit: manualHit);
-                        SetTimer();
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+    public void Hit(Geode geode, Vector3 hitPoint, bool manualHit = false) {
+        SaveSystem.statistics.Hit(manualHit: manualHit);
+        geode.Hit(hitPoint, manualHit: manualHit);
+        SetTimer();
     }
 }

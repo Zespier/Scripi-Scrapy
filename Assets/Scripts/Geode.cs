@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Geode : MonoBehaviour {
+public class Geode : GrabableItem {
 
     public Vector2 breakForce = new Vector2(4, 8);
-    public Rigidbody rb;
-    public List<GameObject> children;
+    public List<GrabableItem> children;
     public Transform newParent;
     public bool isLaunched;
     public int health = 4;
@@ -36,6 +35,7 @@ public class Geode : MonoBehaviour {
             children[i].transform.parent = newParent;
 
             var rb = children[i].gameObject.AddComponent<Rigidbody>();
+            children[i].rb = rb;
 
             rb.linearVelocity = this.rb.linearVelocity;
             rb.angularVelocity = this.rb.angularVelocity;
@@ -49,9 +49,11 @@ public class Geode : MonoBehaviour {
 
             if (children[i].TryGetComponent(out GeodePart geodePart)) {
                 geodePart.StartDissapearTimer();
+                geodePart.geodeParent = null;
 
             } else if (children[i].TryGetComponent(out SellableItem sellableItem)) {
                 sellableItem.insideGeode = false;
+                sellableItem.geodeParent = null;
             }
         }
 

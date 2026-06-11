@@ -99,6 +99,8 @@ public enum UpgradeType {
     HandDrill = 3,
     HandDrillSpeed = 4,
     BetterGeodes = 5,
+    ExtraInventorySlots = 6,
+    BiggerStacks = 7,
 }
 
 [System.Serializable]

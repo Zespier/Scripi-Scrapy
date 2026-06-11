@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GeodePart : MonoBehaviour {
+public class GeodePart : GrabableItem {
 
     public float timeAlive = 5f;
     public float timeOfIncreaseSize = 0.2f;

@@ -3866,6 +3866,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb06222897adacb40912c3c1f1fd14fe, type: 2}
   - {fileID: 11400000, guid: 320d8083b72a0114795b3ab89fc29da8, type: 2}
   - {fileID: 11400000, guid: 5b87f6925ebce1345a8a2ff355b25539, type: 2}
+  - {fileID: 11400000, guid: deb23d2c910c1c344b18935116abdf0f, type: 2}
+  - {fileID: 11400000, guid: 994ef63d1c68cf8429b8ad7bafa04f8a, type: 2}
+  upgradeButtons: []
 --- !u!1 &1554436131
 GameObject:
   m_ObjectHideFlags: 0
@@ -4362,6 +4365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79743d36eceae6e4da29eb1b22ac4426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interactor
+  interactionDistance: 6
   grabDistanceFromCamera: 2.35
   launchForce: 15.52
   attackSpeed: 15

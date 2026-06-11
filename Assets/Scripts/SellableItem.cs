@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SellableItem : MonoBehaviour {
+public class SellableItem : GrabableItem {
 
     public float sellAmount = 13f;
     public bool insideGeode;
