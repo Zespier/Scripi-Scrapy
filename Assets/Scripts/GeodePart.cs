@@ -8,6 +8,8 @@ public class GeodePart : GrabableItem {
     public float increseSizeAmount = 1.2f;
     public float dissapearTime = 1f;
 
+    public override bool CanBeGrabbed => false;
+
     private bool _dissapearing;
 
     public void StartDissapearTimer() {

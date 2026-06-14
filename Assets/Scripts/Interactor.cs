@@ -125,6 +125,8 @@ public class Interactor : MonoBehaviour {
     }
 
     public void Interact(GrabableItem grabableItem) {
+        if (!grabableItem.CanBeGrabbed) { return; }
+        if (!Inventory.CanAddToInventory(grabableItem)) { return; }
 
         if (grabableItem.geodeParent != null) { //If it's inside geode grab the geode
             grabableItem = grabableItem.geodeParent;
