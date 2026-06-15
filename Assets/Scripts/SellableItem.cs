@@ -5,6 +5,7 @@ public class SellableItem : GrabableItem {
 
     public float sellAmount = 13f;
     public bool insideGeode;
+    public bool canBeSelled = true;
 
     private void OnEnable() {
         Active.AddSellableItem(this);

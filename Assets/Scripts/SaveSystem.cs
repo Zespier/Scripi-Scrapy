@@ -71,9 +71,14 @@ public class SaveSystem {
 
         for (int i = 0; i < saveData.upgrades.Count; i++) {
             for (int j = 0; j < MenuUpgrades.instance.upgrades.Count; j++) {
-                if (saveData.upgrades[i].id == MenuUpgrades.instance.upgrades[j].id) {
-                    MenuUpgrades.instance.upgrades[j].isUnlocked = saveData.upgrades[i].isUnlocked;
-                    MenuUpgrades.instance.ApplyUpgradeEffect(saveData.upgrades[i]);
+                if (saveData.upgrades[i] == null) {
+                    Debug.LogError("Some data got corrupted => index of upgrade:  " + i);
+
+                } else {
+                    if (saveData.upgrades[i].id == MenuUpgrades.instance.upgrades[j].id) {
+                        MenuUpgrades.instance.upgrades[j].isUnlocked = saveData.upgrades[i].isUnlocked;
+                        MenuUpgrades.instance.ApplyUpgradeEffect(saveData.upgrades[i]);
+                    }
                 }
             }
         }

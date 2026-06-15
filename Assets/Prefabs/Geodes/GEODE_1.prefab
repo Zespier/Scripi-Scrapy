@@ -1374,7 +1374,7 @@ MonoBehaviour:
   pointOfInteraction: {x: 0, y: 0, z: 0}
   meshRenderers:
   - {fileID: 5051710823638754802}
-  itemSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  itemSprite: {fileID: 21300000, guid: 2915dc4bc21da5a49891c0b2fdb94376, type: 3}
   stackWeight: 1
   sellAmount: 13
   insideGeode: 1
@@ -2735,8 +2735,8 @@ MonoBehaviour:
   - {fileID: 2539820725983187375}
   - {fileID: 3338936084857523724}
   - {fileID: 5051710823638754802}
-  itemSprite: {fileID: 0}
-  stackWeight: 2e+23
+  itemSprite: {fileID: 21300000, guid: 74a75d9d251491c48b65d37844bf2f24, type: 3}
+  stackWeight: 15103
   breakForce: {x: 2.5, y: 6.5}
   children:
   - {fileID: 7047083631983477634}

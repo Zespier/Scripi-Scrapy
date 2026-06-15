@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Interactor : MonoBehaviour {
 
+    public Transform grabPoint;
     public float interactionDistance = 6;
     public float grabDistanceFromCamera = 4f;
     public float launchForce = 10f;
@@ -12,13 +12,13 @@ public class Interactor : MonoBehaviour {
     public List<int> hitDamageByLevelss = new List<int>() { 1, 4, 9, 13, 18, 21 };
     public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
 
-    private Stack<GrabableItem> grabbedObjects = new Stack<GrabableItem>();
     private bool _isHitting;
     private float _hitCancelTimer;
     private float _attackSpeedTimer;
     private bool _lastFrameHadGeodeBeingHit;
     private RaycastHit[] _hits = new RaycastHit[10];
     private GrabableItem _lastVisualItem;
+    private Camera mainCamera;
 
     //Primer golpe es fuerte, los demás solo 1
     public int FirstHitDamage => MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage);
@@ -27,6 +27,7 @@ public class Interactor : MonoBehaviour {
     public static Interactor instance;
     private void Awake() {
         if (!instance) { instance = this; }
+        mainCamera = Camera.main;
     }
 
     protected virtual void SetTimer() {
@@ -44,7 +45,7 @@ public class Interactor : MonoBehaviour {
 
         if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
 
-            if (grabbedObjects.Count > 0) {
+            if (Inventory.slots.Count > 0) {
                 Launch();
 
             } else if (itemInFront != null && itemInFront is Geode geode) {
@@ -78,13 +79,15 @@ public class Interactor : MonoBehaviour {
 
         #region Behaviour Of Grabbed Object
 
-        if (grabbedObjects.Count > 0) {
+        if (Inventory.slots.Count > 0) {
 
-            GrabableItem visualItem = grabbedObjects.Peek();
+            GrabableItem visualItem = Inventory.slots[^1].slotItems[^1];
 
-            foreach (GrabableItem item in grabbedObjects) {
-                if (item == visualItem) { continue; }
-                item.Hide();
+            for (int i = 0; i < Inventory.slots.Count; i++) {
+                for (int j = 0; j < Inventory.slots[i].slotItems.Count; j++) {
+                    if (Inventory.slots[i].slotItems[j] == visualItem) { continue; }
+                    Inventory.slots[i].slotItems[j].Hide();
+                }
             }
 
             if (_lastVisualItem != null && _lastVisualItem != visualItem) {
@@ -95,7 +98,8 @@ public class Interactor : MonoBehaviour {
             visualItem.rb.isKinematic = true;
             visualItem.rb.linearVelocity = Vector3.zero;
             visualItem.rb.angularVelocity = Vector3.zero;
-            visualItem.transform.position = (Camera.main.transform.position + Camera.main.transform.forward * grabDistanceFromCamera);
+            grabPoint.transform.localPosition = new Vector3(grabPoint.localPosition.x, grabPoint.localPosition.y, grabDistanceFromCamera);
+            visualItem.transform.position = grabPoint.position;
 
             _lastVisualItem = visualItem;
 
@@ -114,10 +118,12 @@ public class Interactor : MonoBehaviour {
 
     public void Launch() {
 
-        GrabableItem grabableItem = grabbedObjects.Pop();
+        //This launches the last item saved
+        GrabableItem grabableItem = Inventory.slots[^1].slotItems[^1];
+        Inventory.RemoveItemFromInventory(grabableItem);
 
         grabableItem.rb.isKinematic = false;
-        grabableItem.rb.AddForce(Camera.main.transform.forward * launchForce, ForceMode.Impulse);
+        grabableItem.rb.AddForce(mainCamera.transform.forward * launchForce, ForceMode.Impulse);
 
         if (grabableItem is Geode geode) {
             geode.isLaunched = true;
@@ -126,12 +132,14 @@ public class Interactor : MonoBehaviour {
 
     public void Interact(GrabableItem grabableItem) {
         if (!grabableItem.CanBeGrabbed) { return; }
-        if (!Inventory.CanAddToInventory(grabableItem)) { return; }
 
         if (grabableItem.geodeParent != null) { //If it's inside geode grab the geode
             grabableItem = grabableItem.geodeParent;
         }
-        grabbedObjects.Push(grabableItem);
+
+        if (!Inventory.TryAddToInventory(grabableItem)) {
+            /* Feedback of inventory full */
+        }
 
         //ME QUEDA POR HACER
         /*
@@ -157,8 +165,27 @@ public class Interactor : MonoBehaviour {
             if (_hits[i].collider.CompareTag("Player")) { continue; }
 
             if (_hits[i].collider.TryGetComponent(out GrabableItem grabableItem)) {
-                if (grabbedObjects.Contains(grabableItem)) { continue; }
-                if (grabableItem.geodeParent != null && grabbedObjects.Contains(grabableItem.geodeParent)) { continue; }
+
+                bool grabableItemIsAlreadyGrabbed = false;
+                //If the item is already being hold, ignore
+                for (int n = 0; n < Inventory.slots.Count; n++) {
+                    if (Inventory.slots[n].slotItems.Contains(grabableItem)) {
+                        grabableItemIsAlreadyGrabbed = true;
+                        break;
+                    }
+                }
+
+                //If the geode is already being hold, ignore
+                if (grabableItem.geodeParent != null) {
+                    for (int n = 0; n < Inventory.slots.Count; n++) {
+                        if (Inventory.slots[n].slotItems.Contains(grabableItem.geodeParent)) {
+                            grabableItemIsAlreadyGrabbed = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (grabableItemIsAlreadyGrabbed) { continue; }
 
                 if (grabableItem.geodeParent != null) {
                     grabableItem = grabableItem.geodeParent;

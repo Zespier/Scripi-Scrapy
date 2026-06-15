@@ -10,6 +10,7 @@ public class SellSpot : MonoBehaviour {
             SellableItem sellableItem = Active.sellableItems[i];
 
             if (sellableItem.insideGeode) { continue; }
+            if (!sellableItem.canBeSelled) { continue; }
 
             if (transform.position.DistanceSquared(sellableItem.transform.position) < sellDistance * sellDistance) {
                 AudioManager.instance.PlayPop();

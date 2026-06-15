@@ -9,8 +9,12 @@ public class GrabableItem : MonoBehaviour {
     public Vector3 pointOfInteraction;
     public List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
     public Sprite itemSprite;
-    public float stackWeight = 1;
+    public int stackWeight = 1;
     public virtual bool CanBeGrabbed => true;
+
+    private void OnDisable() {
+        Inventory.RemoveItemFromInventory(this);
+    }
 
     [ContextMenu("Get Mesh References")]
     public void GetMeshReferences() {
