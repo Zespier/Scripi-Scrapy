@@ -7,11 +7,8 @@ using UnityEngine.SceneManagement;
 public class MenuUpgrades : MonoBehaviour {
 
     public CanvasGroup canvasGroup;
-    public TMP_Text hitDamageCostText;
-    public TMP_Text drillSpeedCostText;
-    public TMP_Text hitAreaCostText;
 
-    public List<UpgradeData> upgrades;
+    public List<UpgradeDataSO> upgrades;
     public List<UpgradeButton> upgradeButtons;
 
     public static MenuUpgrades instance;
@@ -42,15 +39,6 @@ public class MenuUpgrades : MonoBehaviour {
         CheckGameReset();
     }
 
-    [ContextMenu("Reposition Buttons")]
-    public void RepositionUpgradeButtons() {
-
-        Vector3 center = Vector3.zero;
-        Vector2 size = upgradeButtons[0].rectTransform.sizeDelta;
-
-        //Realmente hablamos de hacer lo de las constelaciones para las mejoras, que eso es la focking polla. Puedo coger el Controller de Skuld, y hacer que se mueva por constellations. Lo que puedo automatizar, es donde van las mejoras por el precio, pero la colocación la voy a hacer a mano, porque quiero que tenga forma de constelaciones reales.
-    }
-
     public int GetUpgradeLevel(UpgradeType type) {
         int level = 0;
 
@@ -68,7 +56,7 @@ public class MenuUpgrades : MonoBehaviour {
         canvasGroup.blocksRaycasts = active;
     }
 
-    public void Upgrade(UpgradeData upgradeData) {
+    public void Upgrade(UpgradeDataSO upgradeData) {
         if (Money.instance.CanBuy(upgradeData.cost)) {
             Money.instance.SpendMoney(upgradeData.cost);
 
@@ -83,7 +71,7 @@ public class MenuUpgrades : MonoBehaviour {
         ApplyUpgradeEffect(upgradeData);
     }
 
-    public void ApplyUpgradeEffect(UpgradeData upgradeData) {
+    public void ApplyUpgradeEffect(UpgradeDataSO upgradeData) {
         switch (upgradeData.type) {
             case UpgradeType.HandDrill:
                 HandDrillStats.isUnlocked = upgradeData.isUnlocked;

@@ -93,7 +93,7 @@ public class SaveData {
 
     public float money;
     public PlayerStatistics statistics;
-    public List<UpgradeData> upgrades = new();
+    public List<UpgradeDataSO> upgrades = new();
 }
 
 [System.Serializable]
