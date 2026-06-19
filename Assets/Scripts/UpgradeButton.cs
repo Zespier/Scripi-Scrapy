@@ -1,16 +1,22 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UpgradeButton : MonoBehaviour {
+public class UpgradeButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
     public RectTransform rectTransform;
     public UpgradeDataSO upgradeData;
-    public Image image;
-    public TMP_Text costText;
 
-    private void Update() {
-        image.sprite = upgradeData.sprite;
-        costText.text = upgradeData.cost.ToString();
+    public void OnPointerClick(PointerEventData eventData) {
+        MenuUpgrades.instance.Upgrade(upgradeData);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) {
+        MenuUpgrades.instance.outline.position = rectTransform.position;
+        MenuUpgrades.instance.ShowDetails(upgradeData);
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        MenuUpgrades.instance.outline.position = new Vector3(1000000000, 0, 0);
+        MenuUpgrades.instance.HideDetails();
     }
 }

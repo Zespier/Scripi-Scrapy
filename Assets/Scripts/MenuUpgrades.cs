@@ -3,13 +3,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuUpgrades : MonoBehaviour {
 
     public CanvasGroup canvasGroup;
-
+    public RectTransform outline;
     public List<UpgradeDataSO> upgrades;
     public List<UpgradeButton> upgradeButtons;
+    public Image upgradeImage;
+    public TMP_Text details;
+    public TMP_Text cost;
 
     public static MenuUpgrades instance;
     private void Awake() {
@@ -94,5 +98,18 @@ public class MenuUpgrades : MonoBehaviour {
 
             SceneManager.LoadScene(0);
         }
+    }
+
+    public void ShowDetails(UpgradeDataSO upgradeDataSO) {
+        upgradeImage.enabled = true;
+        upgradeImage.sprite = upgradeDataSO.sprite;
+        details.text = upgradeDataSO.name;
+        cost.text = upgradeDataSO.cost.ToString();
+    }
+
+    public void HideDetails() {
+        upgradeImage.enabled = false;
+        details.text = "";
+        cost.text = "";
     }
 }
