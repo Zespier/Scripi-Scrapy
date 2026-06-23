@@ -53,6 +53,7 @@ public class Geode : GrabableItem {
 
             } else if (children[i].TryGetComponent(out SellableItem sellableItem)) {
                 sellableItem.insideGeode = false;
+                sellableItem.canBeSelled = true;
                 sellableItem.geodeParent = null;
             }
         }
@@ -64,7 +65,7 @@ public class Geode : GrabableItem {
     }
 
     public void Hit(Vector3 hitPoint, bool hitWall = false, bool manualHit = false) {
-        if (health - MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage) >= 10) {
+        if (health - Interactor.instance.FirstHitDamage >= 10) {
 
             if (_cantBreakThisGeodeFeedback == null || _cantBreakThisGeodeFeedback.Deactivated) {
                 _cantBreakThisGeodeFeedback = FeedbackController.instance.PlayParticle(ParticleType.CantBreakGeode, transform.position + Vector3.up * 1.1f, Vector3.forward);

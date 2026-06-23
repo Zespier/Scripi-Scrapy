@@ -4,7 +4,7 @@ using UnityEngine;
 public class Money : MonoBehaviour {
 
     public TMP_Text moneyText;
-    public float currentMoney;
+    public long currentMoney;
 
     public static Money instance;
 
@@ -13,20 +13,20 @@ public class Money : MonoBehaviour {
     }
 
     private void Update() {
-        moneyText.text = $"{currentMoney.ToString("F0")}$";
+        moneyText.text = $"{currentMoney.FormatNumber()}$";
     }
 
-    public bool CanBuy(float amount) {
+    public bool CanBuy(long amount) {
         return currentMoney >= amount;
     }
 
-    public void AddMoney(float amount) {
+    public void AddMoney(long amount) {
         AudioManager.instance.PlayPop();
         currentMoney += amount;
         SaveSystem.statistics.moneyGained += amount;
     }
 
-    public void SpendMoney(float amount) {
+    public void SpendMoney(long amount) {
         currentMoney -= amount;
         SaveSystem.statistics.moneySpent += amount;
     }

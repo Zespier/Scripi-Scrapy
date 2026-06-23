@@ -76,7 +76,7 @@ public class SaveSystem {
 
                 } else {
                     if (saveData.upgrades[i].id == MenuUpgrades.instance.upgrades[j].id) {
-                        MenuUpgrades.instance.upgrades[j].isUnlocked = saveData.upgrades[i].isUnlocked;
+                        MenuUpgrades.instance.upgrades[j].isUpgraded = saveData.upgrades[i].isUpgraded;
                         MenuUpgrades.instance.ApplyUpgradeEffect(saveData.upgrades[i]);
                     }
                 }
@@ -91,7 +91,7 @@ public class SaveSystem {
 public class SaveData {
     public int dataVersion = 1; //NEVER delete this variable, even if it's not used, you will thank me 6 months later
 
-    public float money;
+    public long money;
     public PlayerStatistics statistics;
     public List<UpgradeDataSO> upgrades = new();
 }
@@ -121,8 +121,8 @@ public class PlayerStatistics {
     public int geodesBrokenByCollateralDamage;
     public int geodesBrokenWithAutomaticGear;
     public int itemsSelled;
-    public float moneyGained;
-    public float moneySpent;
+    public long moneyGained;
+    public long moneySpent;
 
     public void Hit(bool manualHit) {
         totalHits++;

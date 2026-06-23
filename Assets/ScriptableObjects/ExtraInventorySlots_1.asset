@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   id: ExtraInventorySlots_1
   type: 6
-  isUnlocked: 0
+  isUpgraded: 0
   cost: 100
+  sprite: {fileID: 21300000, guid: 2915dc4bc21da5a49891c0b2fdb94376, type: 3}

@@ -21,8 +21,8 @@ public class Interactor : MonoBehaviour {
     private Camera mainCamera;
 
     //Primer golpe es fuerte, los demás solo 1
-    public int FirstHitDamage => MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage);
-    public int HitArea => MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitArea);
+    public int FirstHitDamage => hitDamageByLevelss[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage)];
+    public float HitArea => hitAreaByLevels[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitArea)];
 
     public static Interactor instance;
     private void Awake() {
@@ -127,6 +127,9 @@ public class Interactor : MonoBehaviour {
 
         if (grabableItem is Geode geode) {
             geode.isLaunched = true;
+        }
+        if (grabableItem is SellableItem sellableItem) {
+            sellableItem.canBeSelled = true;
         }
     }
 

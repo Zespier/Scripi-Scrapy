@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SellableItem : GrabableItem {
 
-    public float sellAmount = 13f;
+    public long sellAmount = 13L;
     public bool insideGeode;
     public bool canBeSelled = true;
 

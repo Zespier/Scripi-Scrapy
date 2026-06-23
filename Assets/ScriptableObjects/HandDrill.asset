@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   id: HandDrill
   type: 3
-  isUnlocked: 0
+  isUpgraded: 0
   cost: 100
+  sprite: {fileID: 21300000, guid: 74a75d9d251491c48b65d37844bf2f24, type: 3}
