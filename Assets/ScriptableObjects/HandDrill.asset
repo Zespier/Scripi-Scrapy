@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: HandDrill
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   id: HandDrill
+  name: Hand Drill
+  details: 
+  cost: 100
   type: 3
   isUpgraded: 0
-  cost: 100
   sprite: {fileID: 21300000, guid: 74a75d9d251491c48b65d37844bf2f24, type: 3}
+  mpsMultiplierEstimated: 1
+  mpsAddedEstimated: 0
+  savedPosition: {x: 0, y: 0}

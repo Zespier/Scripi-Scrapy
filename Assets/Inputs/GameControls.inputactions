@@ -154,6 +154,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleStats",
+                    "type": "Button",
+                    "id": "0c35fae9-816a-4db8-b498-89db8edb4da4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -511,6 +520,17 @@
                 },
                 {
                     "name": "",
+                    "id": "5f2a0e4f-2449-4fe5-82f6-0f628a8fb6c6",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleStats",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6ce287bb-4a03-41e2-8625-5d610d0e952c",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -837,6 +857,15 @@
                     "name": "ToggleInventory",
                     "type": "Button",
                     "id": "df614102-65cd-4c65-821d-3a0d4465aa2d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleStats",
+                    "type": "Button",
+                    "id": "118b545f-55cc-42a0-b945-db833591eb43",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1743,6 +1772,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90b37632-34f8-43a5-a27c-cc9608161e23",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleStats",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

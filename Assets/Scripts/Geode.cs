@@ -8,10 +8,21 @@ public class Geode : GrabableItem {
     public Transform newParent;
     public bool isLaunched;
     public int health = 4;
+    public List<SellableItem> the3Items;
+    public GeodeTier tier;
+    public List<Vector3> chances = new List<Vector3>(capacity: 3);
 
     private float _currentHealth;
     private bool _wasHitForTheFirstTime;
     private ParticleFeedback _cantBreakThisGeodeFeedback;
+    private bool _isBroken;
+    private List<(List<int> amounts, List<float> chances)> multipleMineralsData = new List<(List<int>, List<float>)>() {
+         (new List<int>(){ 1, 2 } , new List<float>(){ 85, 15 }),
+         (new List<int>(){ 1, 2, 3} , new List<float>(){ 40, 40, 20 }),
+         (new List<int>(){ 2, 3, 4} , new List<float>(){ 60, 30, 10 }),
+    };
+
+    public Vector3 Chances => chances[(int)tier];
 
     private void OnEnable() {
         _currentHealth = health;
@@ -31,7 +42,28 @@ public class Geode : GrabableItem {
     [ContextMenu("Break")]
     public void Break() {
 
+        if (_isBroken) {
+            return;
+        }
+        _isBroken = true;
+
+        int numberOfMinerals = GetNumberOfMinerals();
+
+        for (int i = 0; i < numberOfMinerals; i++) {
+            SellableItem newSellableItem = Instantiate(DecideSellableItem(), newParent);
+            children.Add(newSellableItem);
+            newSellableItem.canBeSelled = true;
+            newSellableItem.geodeParent = null;
+            newSellableItem.transform.position = transform.position;
+        }
+
         for (int i = 0; i < children.Count; i++) {
+
+            if (children[i].TryGetComponent(out GeodePart geodePart)) {
+                geodePart.StartDissapearTimer();
+                geodePart.geodeParent = null;
+            }
+
             children[i].transform.parent = newParent;
 
             var rb = children[i].gameObject.AddComponent<Rigidbody>();
@@ -45,17 +77,6 @@ public class Geode : GrabableItem {
 
             rb.AddForce(randomDirection * randomForce, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * randomForce, ForceMode.Impulse);
-
-
-            if (children[i].TryGetComponent(out GeodePart geodePart)) {
-                geodePart.StartDissapearTimer();
-                geodePart.geodeParent = null;
-
-            } else if (children[i].TryGetComponent(out SellableItem sellableItem)) {
-                sellableItem.insideGeode = false;
-                sellableItem.canBeSelled = true;
-                sellableItem.geodeParent = null;
-            }
         }
 
         SaveSystem.statistics.geodesBroken++;
@@ -123,10 +144,61 @@ public class Geode : GrabableItem {
         }
     }
 
+    private SellableItem DecideSellableItem() {
+        float random = Random.Range(0, 100);
+
+        float totalChance = Chances.x;
+        if (random <= totalChance) {
+            return the3Items[0];
+        }
+
+        totalChance += Chances.y;
+        if (random <= totalChance) {
+            return the3Items[1];
+        }
+
+        totalChance += Chances.z;
+        if (random <= totalChance) {
+            return the3Items[2];
+        }
+
+        //This should never happen
+        Debug.LogError("The weird thing happened iwth chances");
+        return the3Items[0];
+    }
+
+    public int GetNumberOfMinerals() {
+
+        //This separates the Lists from the tuple, I wrote it like that to group the data inside one list
+        var (amounts, chances) = multipleMineralsData[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.MultipleMinerals)];
+
+        float randomValue = Random.Range(0f, 100);
+
+        float totalChance = 0f;
+
+        for (int i = 0; i < chances.Count; i++) {
+            totalChance += chances[i];
+
+            if (randomValue <= totalChance) {
+                return amounts[i];
+            }
+        }
+
+        return amounts[amounts.Count - 1];
+    }
+
     private void OnCollisionEnter(Collision collision) {
         if (isLaunched) {
             Hit(Vector3.zero, hitWall: true);
             isLaunched = false;
         }
     }
+}
+
+public enum GeodeTier {
+    Tier1,
+    Tier2,
+    Tier3,
+    Tier4,
+    Tier5,
 }

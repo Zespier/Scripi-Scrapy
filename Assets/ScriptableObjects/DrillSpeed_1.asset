@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: DrillSpeed_1
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   id: DrillSpeed_1
+  name: Drill Speed
+  details: 
+  cost: 30
   type: 1
   isUpgraded: 0
-  cost: 30
   sprite: {fileID: 21300000, guid: 74a75d9d251491c48b65d37844bf2f24, type: 3}
+  mpsMultiplierEstimated: 2
+  mpsAddedEstimated: 0
+  savedPosition: {x: -1380, y: 0}

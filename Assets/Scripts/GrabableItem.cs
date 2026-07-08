@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrabableItem : MonoBehaviour {
+public class GrabableItem : Interactable {
 
     public ItemType type;
     public Rigidbody rb;
@@ -10,7 +10,7 @@ public class GrabableItem : MonoBehaviour {
     public List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
     public Sprite itemSprite;
     public int stackWeight = 1;
-    public virtual bool CanBeGrabbed => true;
+    public bool canBeGrabbed = true;
 
     private void OnDisable() {
         Inventory.RemoveItemFromInventory(this);
@@ -26,11 +26,40 @@ public class GrabableItem : MonoBehaviour {
         for (int i = 0; i < meshRenderers.Count; i++) {
             meshRenderers[i].enabled = false;
         }
+
+        if (rb != null) {
+            rb.isKinematic = true;
+        }
+
+        canBeGrabbed = false;
     }
 
     public void Show() {
         for (int i = 0; i < meshRenderers.Count; i++) {
             meshRenderers[i].enabled = true;
+        }
+
+        if (rb != null) {
+            rb.isKinematic = false;
+        }
+
+        canBeGrabbed = true;
+    }
+
+    public override bool Interact() {
+        if (!canBeGrabbed) { return false; }
+
+        GrabableItem resultGrabable = this;
+
+        if (geodeParent != null) { //If it's inside geode grab the geode
+            resultGrabable = geodeParent;
+        }
+
+        if (!Inventory.TryAddToInventory(resultGrabable)) {
+            return false;
+            /* Feedback of inventory full */
+        } else {
+            return true;
         }
     }
 }

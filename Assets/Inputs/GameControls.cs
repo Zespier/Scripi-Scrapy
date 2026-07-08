@@ -240,6 +240,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleStats"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c35fae9-816a-4db8-b498-89db8edb4da4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -597,6 +606,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5f2a0e4f-2449-4fe5-82f6-0f628a8fb6c6"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleStats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""6ce287bb-4a03-41e2-8625-5d610d0e952c"",
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
@@ -923,6 +943,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""name"": ""ToggleInventory"",
                     ""type"": ""Button"",
                     ""id"": ""df614102-65cd-4c65-821d-3a0d4465aa2d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleStats"",
+                    ""type"": ""Button"",
+                    ""id"": ""118b545f-55cc-42a0-b945-db833591eb43"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1831,6 +1860,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90b37632-34f8-43a5-a27c-cc9608161e23"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleStats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1881,6 +1921,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_Character_SpecialAbility = m_Character.FindAction("SpecialAbility", throwIfNotFound: true);
         m_Character_ToggleBuilder = m_Character.FindAction("ToggleBuilder", throwIfNotFound: true);
         m_Character_ToggleInventory = m_Character.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_Character_ToggleStats = m_Character.FindAction("ToggleStats", throwIfNotFound: true);
         // Building
         m_Building = asset.FindActionMap("Building", throwIfNotFound: true);
         m_Building_ConfirmPlacement = m_Building.FindAction("ConfirmPlacement", throwIfNotFound: true);
@@ -1907,6 +1948,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_Interface_Confirm = m_Interface.FindAction("Confirm", throwIfNotFound: true);
         m_Interface_Any = m_Interface.FindAction("Any", throwIfNotFound: true);
         m_Interface_ToggleInventory = m_Interface.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_Interface_ToggleStats = m_Interface.FindAction("ToggleStats", throwIfNotFound: true);
     }
 
     ~@GameControls()
@@ -2097,6 +2139,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_SpecialAbility;
     private readonly InputAction m_Character_ToggleBuilder;
     private readonly InputAction m_Character_ToggleInventory;
+    private readonly InputAction m_Character_ToggleStats;
     /// <summary>
     /// Provides access to input actions defined in input action map "Character".
     /// </summary>
@@ -2152,6 +2195,10 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Character/ToggleInventory".
         /// </summary>
         public InputAction @ToggleInventory => m_Wrapper.m_Character_ToggleInventory;
+        /// <summary>
+        /// Provides access to the underlying input action "Character/ToggleStats".
+        /// </summary>
+        public InputAction @ToggleStats => m_Wrapper.m_Character_ToggleStats;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2211,6 +2258,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ToggleInventory.started += instance.OnToggleInventory;
             @ToggleInventory.performed += instance.OnToggleInventory;
             @ToggleInventory.canceled += instance.OnToggleInventory;
+            @ToggleStats.started += instance.OnToggleStats;
+            @ToggleStats.performed += instance.OnToggleStats;
+            @ToggleStats.canceled += instance.OnToggleStats;
         }
 
         /// <summary>
@@ -2255,6 +2305,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ToggleInventory.started -= instance.OnToggleInventory;
             @ToggleInventory.performed -= instance.OnToggleInventory;
             @ToggleInventory.canceled -= instance.OnToggleInventory;
+            @ToggleStats.started -= instance.OnToggleStats;
+            @ToggleStats.performed -= instance.OnToggleStats;
+            @ToggleStats.canceled -= instance.OnToggleStats;
         }
 
         /// <summary>
@@ -2439,6 +2492,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Interface_Confirm;
     private readonly InputAction m_Interface_Any;
     private readonly InputAction m_Interface_ToggleInventory;
+    private readonly InputAction m_Interface_ToggleStats;
     /// <summary>
     /// Provides access to input actions defined in input action map "Interface".
     /// </summary>
@@ -2523,6 +2577,10 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleInventory => m_Wrapper.m_Interface_ToggleInventory;
         /// <summary>
+        /// Provides access to the underlying input action "Interface/ToggleStats".
+        /// </summary>
+        public InputAction @ToggleStats => m_Wrapper.m_Interface_ToggleStats;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Interface; }
@@ -2602,6 +2660,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ToggleInventory.started += instance.OnToggleInventory;
             @ToggleInventory.performed += instance.OnToggleInventory;
             @ToggleInventory.canceled += instance.OnToggleInventory;
+            @ToggleStats.started += instance.OnToggleStats;
+            @ToggleStats.performed += instance.OnToggleStats;
+            @ToggleStats.canceled += instance.OnToggleStats;
         }
 
         /// <summary>
@@ -2667,6 +2728,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @ToggleInventory.started -= instance.OnToggleInventory;
             @ToggleInventory.performed -= instance.OnToggleInventory;
             @ToggleInventory.canceled -= instance.OnToggleInventory;
+            @ToggleStats.started -= instance.OnToggleStats;
+            @ToggleStats.performed -= instance.OnToggleStats;
+            @ToggleStats.canceled -= instance.OnToggleStats;
         }
 
         /// <summary>
@@ -2825,6 +2889,13 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleStats" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleStats(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Building" which allows adding and removing callbacks.
@@ -2995,5 +3066,12 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleStats" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleStats(InputAction.CallbackContext context);
     }
 }

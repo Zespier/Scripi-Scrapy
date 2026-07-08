@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class InventorySlotUIManager : MonoBehaviour {
 
+    public CanvasGroup canvasGroup;
     public List<InventorySlotUI> inventorySlotsUI = new();
     public float slotsWidth = 100;
+
+    private void Awake() {
+        ActiveCanvasGroup(true);
+    }
 
     private void Update() {
         for (int i = 0; i < Inventory.slots.Count; i++) {
@@ -19,5 +24,11 @@ public class InventorySlotUIManager : MonoBehaviour {
         for (int i = Inventory.slots.Count; i < inventorySlotsUI.Count; i++) {
             inventorySlotsUI[i].gameObject.SetActive(false);
         }
+    }
+
+    private void ActiveCanvasGroup(bool active) {
+        canvasGroup.alpha = active ? 1.0f : 0;
+        canvasGroup.interactable = active;
+        canvasGroup.blocksRaycasts = active;
     }
 }

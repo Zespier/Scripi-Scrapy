@@ -9,12 +9,11 @@ public class SellSpot : MonoBehaviour {
         for (int i = 0; i < Active.sellableItems.Count; i++) {
             SellableItem sellableItem = Active.sellableItems[i];
 
-            if (sellableItem.insideGeode) { continue; }
             if (!sellableItem.canBeSelled) { continue; }
 
             if (transform.position.DistanceSquared(sellableItem.transform.position) < sellDistance * sellDistance) {
                 AudioManager.instance.PlayPop();
-                Money.instance.AddMoney(sellableItem.sellAmount);
+                Money.instance.AddMoneyBySellableItem(sellableItem.sellAmount);
                 SaveSystem.statistics.itemsSelled++;
                 Destroy(sellableItem.gameObject);
                 break;

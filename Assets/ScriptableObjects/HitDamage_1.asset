@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: HitDamage_1
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   id: HitDamage_1
+  name: Hit Damage
+  details: 
+  cost: 10
   type: 0
   isUpgraded: 0
-  cost: 10
   sprite: {fileID: 21300000, guid: 2915dc4bc21da5a49891c0b2fdb94376, type: 3}
+  mpsMultiplierEstimated: 4
+  mpsAddedEstimated: 0
+  savedPosition: {x: -1620, y: 0}

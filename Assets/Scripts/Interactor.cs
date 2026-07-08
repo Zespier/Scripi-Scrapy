@@ -11,11 +11,16 @@ public class Interactor : MonoBehaviour {
     public float timeToCancelHit = 0.9f;
     public List<int> hitDamageByLevelss = new List<int>() { 1, 4, 9, 13, 18, 21 };
     public List<float> hitAreaByLevels = new List<float>() { 1, 1.3f, 2f, 3f, 4f, 5f };
+    public Vector2 launchSpeedRange = new Vector2(2, 10);
+    public float timeToReachMaxLaunchSpeed = 4f;
 
     private bool _isHitting;
     private float _hitCancelTimer;
     private float _attackSpeedTimer;
     private bool _lastFrameHadGeodeBeingHit;
+    private bool _lastFrameWasLaunching;
+    private float _launchTimer;
+    private float _timeLaunching;
     private RaycastHit[] _hits = new RaycastHit[10];
     private GrabableItem _lastVisualItem;
     private Camera mainCamera;
@@ -23,6 +28,7 @@ public class Interactor : MonoBehaviour {
     //Primer golpe es fuerte, los demás solo 1
     public int FirstHitDamage => hitDamageByLevelss[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage)];
     public float HitArea => hitAreaByLevels[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitArea)];
+    public float LaunchSpeed => Mathf.Lerp(launchSpeedRange.x, launchSpeedRange.y, _timeLaunching / timeToReachMaxLaunchSpeed);
 
     public static Interactor instance;
     private void Awake() {
@@ -30,31 +36,66 @@ public class Interactor : MonoBehaviour {
         mainCamera = Camera.main;
     }
 
-    protected virtual void SetTimer() {
+    private void SetTimer() {
         _attackSpeedTimer = !_lastFrameHadGeodeBeingHit ? Time.time : _attackSpeedTimer + 1f / attackSpeed;
+    }
+
+    private void SetLaunchTimer() {
+        _launchTimer = !_lastFrameWasLaunching ? Time.time : _launchTimer + 1f / LaunchSpeed;
     }
 
     private void Update() {
 
         //First active the cross if something is in front;
-        GrabableItem itemInFront = GetItemInFront();
+        Interactable interactableInFront = GetItemInFront();
         for (int i = 0; i < Cross.instance.parts.Count; i++) {
-            Cross.instance.parts[i].gameObject.SetActive(itemInFront != null);
+            Cross.instance.parts[i].gameObject.SetActive(interactableInFront != null);
+        }
+
+        bool _launchIsPressed = InputManager.GameControls.Character.Attack.IsPressed();
+        if (_launchIsPressed) {
+            _timeLaunching += Time.deltaTime;
+        }
+
+        bool _launchSuccessfull = false;
+        if (_launchIsPressed && Time.time > _launchTimer + 1 / LaunchSpeed) { //This is the "automatic" launch
+            if (Inventory.slots.Count > 0) {
+                Launch();
+                _launchIsPressed = true;
+            }
         }
 
 
         if (InputManager.GameControls.Character.Attack.WasPressedThisFrame()) {
+            _timeLaunching = 0;
 
-            if (Inventory.slots.Count > 0) {
-                Launch();
+            if (_launchSuccessfull) {
+                //If we launched an item this frame, then do nothing if it happens that it was the same frame that the input was pressed
 
-            } else if (itemInFront != null && itemInFront is Geode geode) {
-                Hit(geode, geode.pointOfInteraction, manualHit: true);
+
+            } else {
+                //In case we didnt launch but the input was pressed
+                if (Inventory.slots.Count > 0) { //This is the "manual" launch
+                    Launch();
+
+                    //If there is no items on the inventory, hit whatever is in front
+                } else if (interactableInFront != null && interactableInFront is Geode geode) {
+                    Hit(geode, geode.pointOfInteraction, manualHit: true);
+                }
             }
         }
 
-        if (InputManager.GameControls.Character.Interact.WasPressedThisFrame() && itemInFront != null) {
-            Interact(itemInFront);
+        bool interactedWithSomething = false;
+        if (InputManager.GameControls.Character.Interact.WasPressedThisFrame() && interactableInFront != null) {
+            interactedWithSomething = Interact(interactableInFront);
+        }
+
+        if (!interactedWithSomething && InputManager.GameControls.Character.Interact.WasPressedThisFrame()) {
+            Aspiradora.instance.StartSucking();
+        }
+
+        if (InputManager.GameControls.Character.Interact.WasReleasedThisFrame()) {
+            Aspiradora.instance.StopSucking();
         }
 
         if (InputManager.GameControls.Character.Jump.WasPressedThisFrame()) {
@@ -63,7 +104,7 @@ public class Interactor : MonoBehaviour {
 
         if (_isHitting && Time.time - _attackSpeedTimer >= 1f / attackSpeed) {
 
-            if (itemInFront != null && itemInFront is Geode geode) { //Check if the geode got hit
+            if (interactableInFront != null && interactableInFront is Geode geode) { //Check if the geode got hit
                 Hit(geode, geode.pointOfInteraction);
                 SaveSystem.statistics.automaticHits++;
                 _hitCancelTimer = Time.time;
@@ -75,7 +116,8 @@ public class Interactor : MonoBehaviour {
             }
         }
 
-        _lastFrameHadGeodeBeingHit = itemInFront;
+        _lastFrameHadGeodeBeingHit = interactableInFront;
+        _lastFrameWasLaunching = _launchIsPressed;
 
         #region Behaviour Of Grabbed Object
 
@@ -117,6 +159,7 @@ public class Interactor : MonoBehaviour {
     }
 
     public void Launch() {
+        SetLaunchTimer();
 
         //This launches the last item saved
         GrabableItem grabableItem = Inventory.slots[^1].slotItems[^1];
@@ -133,31 +176,11 @@ public class Interactor : MonoBehaviour {
         }
     }
 
-    public void Interact(GrabableItem grabableItem) {
-        if (!grabableItem.CanBeGrabbed) { return; }
-
-        if (grabableItem.geodeParent != null) { //If it's inside geode grab the geode
-            grabableItem = grabableItem.geodeParent;
-        }
-
-        if (!Inventory.TryAddToInventory(grabableItem)) {
-            /* Feedback of inventory full */
-        }
-
-        //ME QUEDA POR HACER
-        /*
-         * Las geodas ocupan un hueco entero de inventario
-         * Las otras gemas o piedras ocupan por ejemplo hasta ocupar 20, y luego pasan al siguiente stack, esto hace que al romper más geodas y conseguir minerales nuevos, te haga querer comprarte la mejora de mejores bolsillos, y eso tambíen hace que el segundo clímax del juego vaya aumentando.
-         * Luego, con la E, agarro una wea, y si pulso otra vez E, NO SE
-         * Con el botón derecho se hace en el slime rancher, así qeu voy a probar botón derecho + E, las dos cosas, y soltar con el izquierdo, y hasta que no dejes de tener los bolsillos llenos no puedes pegar, básicamente con cosas en las manos no puedes pegar, de todas formas acabarías tirando todo lo que tienes en las manos con tal de quedarte con las manos vacías para poder pegar a la piedra.
-         * 
-         * As´que en vez de ver si estoy dándole al grabbed object, mmiro si tengo algo en la lista de platos, lo tiro, y si no tengo, golpeo, sencillo.
-         * 
-         * Con la ruedecilla del ratón te mueves entre un slot de inventario u otro, no sé si esto servirá para algo, pero está guay.
-         */
+    public bool Interact(Interactable interactable) {
+        return interactable.Interact();
     }
 
-    public GrabableItem GetItemInFront() {
+    public Interactable GetItemInFront() {
         int totalHits = Physics.RaycastNonAlloc(Camera.main.transform.position, Camera.main.transform.forward, _hits, interactionDistance);
 
         for (int i = totalHits; i < _hits.Length; i++) {
@@ -167,34 +190,40 @@ public class Interactor : MonoBehaviour {
         for (int i = 0; i < totalHits; i++) {
             if (_hits[i].collider.CompareTag("Player")) { continue; }
 
-            if (_hits[i].collider.TryGetComponent(out GrabableItem grabableItem)) {
+            if (_hits[i].collider.TryGetComponent(out Interactable interactable)) {
 
-                bool grabableItemIsAlreadyGrabbed = false;
-                //If the item is already being hold, ignore
-                for (int n = 0; n < Inventory.slots.Count; n++) {
-                    if (Inventory.slots[n].slotItems.Contains(grabableItem)) {
-                        grabableItemIsAlreadyGrabbed = true;
-                        break;
-                    }
-                }
+                //This is everything we need if the interactable was grabable
+                if (interactable is GrabableItem grabableItem) {
+                    bool grabableItemIsAlreadyGrabbed = false;
 
-                //If the geode is already being hold, ignore
-                if (grabableItem.geodeParent != null) {
+                    //If the item is already being hold, ignore
                     for (int n = 0; n < Inventory.slots.Count; n++) {
-                        if (Inventory.slots[n].slotItems.Contains(grabableItem.geodeParent)) {
+                        if (Inventory.slots[n].slotItems.Contains(grabableItem)) {
                             grabableItemIsAlreadyGrabbed = true;
                             break;
                         }
                     }
+
+                    //If the geode is already being hold, ignore
+                    if (grabableItem.geodeParent != null) {
+                        for (int n = 0; n < Inventory.slots.Count; n++) {
+                            if (Inventory.slots[n].slotItems.Contains(grabableItem.geodeParent)) {
+                                grabableItemIsAlreadyGrabbed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (grabableItemIsAlreadyGrabbed) { continue; }
+
+                    if (grabableItem.geodeParent != null) {
+                        grabableItem = grabableItem.geodeParent;
+                    }
+                    grabableItem.pointOfInteraction = _hits[i].point;
                 }
 
-                if (grabableItemIsAlreadyGrabbed) { continue; }
-
-                if (grabableItem.geodeParent != null) {
-                    grabableItem = grabableItem.geodeParent;
-                }
-                grabableItem.pointOfInteraction = _hits[i].point;
-                return grabableItem;
+                //With default interactables we only return it
+                return interactable;
             }
         }
 
