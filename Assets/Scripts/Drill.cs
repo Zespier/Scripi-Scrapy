@@ -47,17 +47,16 @@ public class Drill : Interactable {
         _spawning = true;
         _timer = Time.time;
 
-        int minGeode = 3;
-        int maxGeode = 10;
+        int maxGeodes = 10;
 
-        float totalTime = Mathf.Lerp(0.5f, 1, (_currentGeodesWaiting - minGeode) / (maxGeode - minGeode));
+        float totalTime = Mathf.Lerp(0.5f, 1, _currentGeodesWaiting / maxGeodes);
 
-
-        float timePerGeode = _currentGeodesWaiting / totalTime;
+        float timePerGeode = totalTime / _currentGeodesWaiting;
 
         float timer = Time.time;
 
         for (int i = 0; i < _currentGeodesWaiting; i++) {
+            timer = Time.time;
             _timer = Time.time;
 
             SpawnGeode();

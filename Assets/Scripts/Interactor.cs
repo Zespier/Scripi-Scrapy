@@ -220,6 +220,9 @@ public class Interactor : MonoBehaviour {
                         grabableItem = grabableItem.geodeParent;
                     }
                     grabableItem.pointOfInteraction = _hits[i].point;
+
+                    //Si no pongo ento y devuelvo el interactable cago, porque grabableItem y interactable eran al empezar 8 bytes apuntando a la clase que se encuentra en la memoria a largo plazo, pero grabable Item si tiene geodeParent acaba de cambiar y está aputnando al otro objeto, mientras que interactable sigue apuntando al anterior.
+                    return grabableItem;
                 }
 
                 //With default interactables we only return it

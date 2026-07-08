@@ -132,8 +132,8 @@ MonoBehaviour:
   pointOfInteraction: {x: 0, y: 0, z: 0}
   meshRenderers:
   - {fileID: 6441764592032947234}
-  itemSprite: {fileID: 21300000, guid: 2915dc4bc21da5a49891c0b2fdb94376, type: 3}
+  itemSprite: {fileID: 21300000, guid: 74a75d9d251491c48b65d37844bf2f24, type: 3}
   stackWeight: 1
   canBeGrabbed: 1
-  sellAmount: 13
+  sellAmount: 25
   canBeSelled: 1

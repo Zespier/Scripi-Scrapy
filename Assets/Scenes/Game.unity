@@ -8777,7 +8777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Drill
   spawnPoint: {fileID: 1385375928}
-  spawnForce: 20
+  spawnForce: 10.5
   spinForce: 1
   geodesText: {fileID: 1466058975}
   allGeodePrefabs:
