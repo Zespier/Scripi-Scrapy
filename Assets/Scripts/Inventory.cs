@@ -5,7 +5,7 @@ public static class Inventory {
     public static List<InventorySlot> slots = new List<InventorySlot>();
     public static int MaxSlots => _slotsPerLevel[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.ExtraInventorySlots)];
 
-    private static List<int> _slotsPerLevel = new List<int> { 5, 6, 7, 8, 9, 10 };
+    private static List<int> _slotsPerLevel = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
     public static bool TryAddToInventory(GrabableItem grabableItem) {
 
@@ -14,7 +14,7 @@ public static class Inventory {
                 if (slots[i].slotItems[j].type == grabableItem.type) {
                     //Vamos por buen camino, ahora vemos si cabe
 
-                    if (slots[i].Stack + grabableItem.stackWeight < slots[i].MaxStack) {
+                    if (slots[i].Stack + grabableItem.stackWeight <= slots[i].MaxStack) {
                         slots[i].slotItems.Add(grabableItem);
                         if (grabableItem is SellableItem sellableItem) {
                             sellableItem.canBeSelled = false;
@@ -62,7 +62,7 @@ public class InventorySlot {
     public int Stack => CalculateStack();
     public int MaxStack => _stackPerLevel[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.ExtraInventorySlots)];
 
-    private List<int> _stackPerLevel = new List<int> { 20, 25, 30, 35, 64 };
+    private List<int> _stackPerLevel = new List<int> { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 64 };
 
     public int CalculateStack() {
         int totalStackWeight = 0;

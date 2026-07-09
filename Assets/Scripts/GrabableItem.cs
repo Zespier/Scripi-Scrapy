@@ -22,28 +22,66 @@ public class GrabableItem : Interactable {
         meshRenderers.Add(GetComponent<MeshRenderer>());
     }
 
-    public void Hide() {
-        for (int i = 0; i < meshRenderers.Count; i++) {
-            meshRenderers[i].enabled = false;
-        }
+    //Este va a ser el proceso, quiero desabilitar el item por completo, voy a ver en qué partes hace falta que esté activo el objeto, solo hacen falta para la aspiradora, el sell spot, y para el daño en area de las geodas, así qeu me da igual si no están enActive, porque ninguna de esas tres cosas quiero que interactuen con los objetos del inventario.
+    //Lo único malo es cómo hago que aparezca el item en la mano, porque es verdad que ese "está" en el inventario.
 
-        if (rb != null) {
-            rb.isKinematic = true;
-        }
+    public void RemoveFunctionality() {
+        rb.isKinematic = true;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
         canBeGrabbed = false;
+
+        if (this is SellableItem sellable) {
+            Active.RemoveSellableItem(sellable);
+            sellable.canBeSelled = false;
+
+        } else if (this is Geode geode) {
+            Active.RemoveGeode(geode);
+        }
+    }
+
+    public void RestoreFunctionality() {
+        rb.isKinematic = false;
+
+        canBeGrabbed = true;
+
+        if (this is SellableItem sellable) {
+            Active.AddSellableItem(sellable);
+            sellable.canBeSelled = true;
+
+        } else if (this is Geode geode) {
+            Active.AddGeode(geode);
+        }
+    }
+
+    public void Hide() {
+        gameObject.SetActive(false);
+        //for (int i = 0; i < meshRenderers.Count; i++) {
+        //    meshRenderers[i].enabled = false;
+        //}
+
+        //if (rb != null) {
+        //    rb.isKinematic = true;
+        //}
+
+        //canBeGrabbed = false;
     }
 
     public void Show() {
-        for (int i = 0; i < meshRenderers.Count; i++) {
-            meshRenderers[i].enabled = true;
-        }
+        //Entonces, deasctivamos el resto, el que esta en la mano lo activamos, pero lo ponemos como que no se puede interactuar ni nada conel, metodo de desabilitar todas sus funciones, pero cuando vuelve al inventario o sale, se vuelve a activar sus funciones. Y ya no?
+        //Esto además vuelve a meterlo en la lista de activeItems, pero sería un problema para el objeto que tenemos en la mano.
+        gameObject.SetActive(true);
 
-        if (rb != null) {
-            rb.isKinematic = false;
-        }
+        //for (int i = 0; i < meshRenderers.Count; i++) {
+        //    meshRenderers[i].enabled = true;
+        //}
 
-        canBeGrabbed = true;
+        //if (rb != null) {
+        //    rb.isKinematic = false;
+        //}
+
+        //canBeGrabbed = true;
     }
 
     public override bool Interact() {

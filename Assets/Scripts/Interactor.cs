@@ -129,6 +129,7 @@ public class Interactor : MonoBehaviour {
                 for (int j = 0; j < Inventory.slots[i].slotItems.Count; j++) {
                     if (Inventory.slots[i].slotItems[j] == visualItem) { continue; }
                     Inventory.slots[i].slotItems[j].Hide();
+                    Inventory.slots[i].slotItems[j].RestoreFunctionality();
                 }
             }
 
@@ -137,9 +138,7 @@ public class Interactor : MonoBehaviour {
             }
 
             visualItem.Show();
-            visualItem.rb.isKinematic = true;
-            visualItem.rb.linearVelocity = Vector3.zero;
-            visualItem.rb.angularVelocity = Vector3.zero;
+            visualItem.RemoveFunctionality();
             grabPoint.transform.localPosition = new Vector3(grabPoint.localPosition.x, grabPoint.localPosition.y, grabDistanceFromCamera);
             visualItem.transform.position = grabPoint.position;
 
@@ -163,6 +162,8 @@ public class Interactor : MonoBehaviour {
 
         //This launches the last item saved
         GrabableItem grabableItem = Inventory.slots[^1].slotItems[^1];
+        grabableItem.RestoreFunctionality();
+        grabableItem.gameObject.SetActive(true);
         Inventory.RemoveItemFromInventory(grabableItem);
 
         grabableItem.rb.isKinematic = false;
