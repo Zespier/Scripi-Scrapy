@@ -1264,7 +1264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 378325495}
   m_Layer: 0
-  m_Name: ---------------------------------
+  m_Name: ----------Environment-----------
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
