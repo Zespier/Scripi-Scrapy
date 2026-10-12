@@ -11,6 +11,7 @@ public class GrabableItem : Interactable {
     public Sprite itemSprite;
     public int stackWeight = 1;
     public bool canBeGrabbed = true;
+    public bool isInInventory;
 
     private void OnDisable() {
         Inventory.RemoveItemFromInventory(this);
@@ -97,6 +98,7 @@ public class GrabableItem : Interactable {
             return false;
             /* Feedback of inventory full */
         } else {
+            isInInventory = true;
             return true;
         }
     }

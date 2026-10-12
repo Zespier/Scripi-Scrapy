@@ -58,7 +58,7 @@ public class Interactor : MonoBehaviour {
         }
 
         bool _launchSuccessfull = false;
-        if (_launchIsPressed && Time.time > _launchTimer + 1 / LaunchSpeed) { //This is the "automatic" launch
+        if (_launchIsPressed && _lastFrameWasLaunching && Time.time > _launchTimer + 1 / LaunchSpeed) { //This is the "automatic" launch
             if (Inventory.slots.Count > 0) {
                 Launch();
                 _launchIsPressed = true;
@@ -165,6 +165,10 @@ public class Interactor : MonoBehaviour {
         grabableItem.RestoreFunctionality();
         grabableItem.gameObject.SetActive(true);
         Inventory.RemoveItemFromInventory(grabableItem);
+        grabableItem.isInInventory = false;
+
+        grabPoint.transform.localPosition = new Vector3(grabPoint.localPosition.x, grabPoint.localPosition.y, grabDistanceFromCamera);
+        grabableItem.transform.position = grabPoint.position;
 
         grabableItem.rb.isKinematic = false;
         grabableItem.rb.AddForce(mainCamera.transform.forward * launchForce, ForceMode.Impulse);

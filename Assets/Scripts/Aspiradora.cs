@@ -24,6 +24,7 @@ public class Aspiradora : MonoBehaviour {
 
             SellableItem item = Active.sellableItems[i];
             if (!item.canBeGrabbed || item.rb == null) { continue; }
+            if (item.isInInventory) { continue; }
 
             //If it's too close to the point, successfully suck it
             if ((item.transform.position - suckPoint).sqrMagnitude < absortionDistance * absortionDistance) {
@@ -39,8 +40,6 @@ public class Aspiradora : MonoBehaviour {
                 //item.rb.AddForce((suckPoint - item.transform.position) * accelerationAppliedToItems, ForceMode.Acceleration);
 
                 item.rb.linearVelocity = Vector3.Slerp(item.rb.linearVelocity, (suckPoint - item.transform.position).normalized * maxVelocityForItems, Time.deltaTime * 7.5f);
-
-                //item.rb.linearVelocity
             }
             //}
         }

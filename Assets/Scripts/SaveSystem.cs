@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SaveSystem {
 
+    //Voy a poner al darle al play el load game, va a ser una pantalla obligatoria de elegir partida, Se cargan las estadísticas, las mejoras y el dinero, y que al darle al F2 salga el elegir partida otra vez.
+
     public static PlayerStatistics statistics;
 
     private static bool _ignorePlayerSaves = false;
