@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class GeodePart : GrabableItem {
+public class GeodePart : MonoBehaviour {
 
+    public Rigidbody rb;
     public float timeAlive = 5f;
     public float timeOfIncreaseSize = 0.2f;
     public float increseSizeAmount = 1.2f;

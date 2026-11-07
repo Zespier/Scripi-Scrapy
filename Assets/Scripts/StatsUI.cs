@@ -34,19 +34,19 @@ public class StatsUI : MonoBehaviour {
                     texts[i].text = $"Total Hits: {SaveSystem.statistics.totalHits}";
                     break;
                 case 4:
-                    texts[i].text = $"Geodes Generated: {SaveSystem.statistics.geodesGenerated}";
+                    texts[i].text = $"Geodes Generated: {SaveSystem.statistics.meteoritesGenerated}";
                     break;
                 case 5:
-                    texts[i].text = $"Geodes Broken: {SaveSystem.statistics.geodesBroken}";
+                    texts[i].text = $"Geodes Broken: {SaveSystem.statistics.meteoritesBroken}";
                     break;
                 case 6:
-                    texts[i].text = $"Geodes Broken by collateral damage: {SaveSystem.statistics.geodesBrokenByCollateralDamage}";
+                    texts[i].text = $"Geodes Broken by collateral damage: {SaveSystem.statistics.meteoritesBrokenByCollateralDamage}";
                     break;
                 case 7:
-                    texts[i].text = $"Geodes Broken with automatic gear: {SaveSystem.statistics.geodesBrokenWithAutomaticGear}";
+                    texts[i].text = $"Geodes Broken with automatic gear: {SaveSystem.statistics.meteoritesBrokenWithAutomaticGear}";
                     break;
                 case 8:
-                    texts[i].text = $"Items selled: {SaveSystem.statistics.itemsSelled}";
+                    texts[i].text = $"Items selled: {SaveSystem.statistics.valuablesSelled}";
                     break;
                 case 9:
                     texts[i].text = $"Money Gained: {SaveSystem.statistics.moneyGained}";

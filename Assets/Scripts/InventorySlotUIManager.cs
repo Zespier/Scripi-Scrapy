@@ -15,8 +15,8 @@ public class InventorySlotUIManager : MonoBehaviour {
     private void Update() {
         for (int i = 0; i < Inventory.slots.Count; i++) {
             inventorySlotsUI[i].gameObject.SetActive(true);
-            inventorySlotsUI[i].image.sprite = Inventory.slots[i].slotItems[0].itemSprite;
-            inventorySlotsUI[i].stack.text = $"x{Inventory.slots[i].slotItems.Count.FormatNumber()}";
+            inventorySlotsUI[i].image.sprite = Inventory.slots[i].items[0].valuablePrefabReference.itemSprite;
+            inventorySlotsUI[i].stack.text = $"x{Inventory.slots[i].items.Count.FormatNumber()}";
 
             inventorySlotsUI[i].rectTransform.localPosition = (slotsWidth * i * Vector3.right) - ((slotsWidth * Inventory.slots.Count) / 2f * Vector3.right);
         }

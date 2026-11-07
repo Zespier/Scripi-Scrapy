@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Geode : GrabableItem {
+public class Meteor : GrabableItem {
 
     public Vector2 breakForce = new Vector2(4, 8);
-    public List<GrabableItem> children;
-    public Transform newParent;
-    public bool isLaunched;
+    public List<GeodePart> children;
     public int health = 4;
-    public List<SellableItem> the3Items;
-    public GeodeTier tier;
+    public List<Valuable> the3Items;
+    public MeteorTier tier;
     public List<Vector3> chances = new List<Vector3>(capacity: 3);
 
     private float _currentHealth;
@@ -27,11 +25,11 @@ public class Geode : GrabableItem {
     private void OnEnable() {
         _currentHealth = health;
 
-        Active.AddGeode(this);
+        Active.AddMeteor(this);
     }
 
     private void OnDisable() {
-        Active.RemoveGeode(this);
+        Active.RemoveMeteor(this);
     }
 
     public void ResetVariables() {
@@ -48,26 +46,15 @@ public class Geode : GrabableItem {
         _isBroken = true;
 
         int numberOfMinerals = GetNumberOfMinerals();
+        List<Valuable> createdValuables = new List<Valuable>(capacity: numberOfMinerals);
 
         for (int i = 0; i < numberOfMinerals; i++) {
-            SellableItem newSellableItem = Instantiate(DecideSellableItem(), newParent);
-            children.Add(newSellableItem);
-            newSellableItem.canBeSelled = true;
-            newSellableItem.geodeParent = null;
+            Valuable newSellableItem = Instantiate(DecideSellableItem(), MeteorContainer.instance.transform);
+            createdValuables.Add(newSellableItem);
             newSellableItem.transform.position = transform.position;
         }
 
-        for (int i = 0; i < children.Count; i++) {
-
-            if (children[i].TryGetComponent(out GeodePart geodePart)) {
-                geodePart.StartDissapearTimer();
-                geodePart.geodeParent = null;
-            }
-
-            children[i].transform.parent = newParent;
-
-            var rb = children[i].gameObject.AddComponent<Rigidbody>();
-            children[i].rb = rb;
+        void AddForceToRB(Rigidbody rb) {
 
             rb.linearVelocity = this.rb.linearVelocity;
             rb.angularVelocity = this.rb.angularVelocity;
@@ -79,7 +66,23 @@ public class Geode : GrabableItem {
             rb.AddTorque(Random.insideUnitSphere * randomForce, ForceMode.Impulse);
         }
 
-        SaveSystem.statistics.geodesBroken++;
+        for (int i = 0; i < children.Count; i++) {
+
+            if (children[i].TryGetComponent(out GeodePart geodePart)) {
+                geodePart.StartDissapearTimer();
+            }
+
+            var rb = children[i].rb;
+            AddForceToRB(rb);
+        }
+
+        for (int i = 0; i < createdValuables.Count; i++) {
+            var rb = createdValuables[i].rb;
+            AddForceToRB(rb);
+        }
+
+        SaveSystem.statistics.valuablesMined += numberOfMinerals;
+        SaveSystem.statistics.meteoritesBroken++;
         CameraHolder.instance.BreakShake();
 
         Destroy(gameObject);
@@ -102,7 +105,7 @@ public class Geode : GrabableItem {
 
         if (_currentHealth <= 0) {
             Break();
-            if (!manualHit) { SaveSystem.statistics.geodesBrokenWithAutomaticGear++; }
+            if (!manualHit) { SaveSystem.statistics.meteoritesBrokenWithAutomaticGear++; }
             AudioManager.instance.PlayRockBreak();
 
         } else {
@@ -112,8 +115,8 @@ public class Geode : GrabableItem {
 
         if (!hitWall && Interactor.instance.HitArea == 1) { return; }
 
-        for (int i = 0; i < Active.geodes.Count; i++) {
-            Geode geode = Active.geodes[i];
+        for (int i = 0; i < Active.meteor.Count; i++) {
+            Meteor geode = Active.meteor[i];
             if (geode == this) { continue; }
 
             if (hitPoint.DistanceSquared(geode.transform.position) < Interactor.instance.HitArea * Interactor.instance.HitArea) {
@@ -130,7 +133,7 @@ public class Geode : GrabableItem {
 
         if (_currentHealth <= 0) {
             Break();
-            SaveSystem.statistics.geodesBrokenByCollateralDamage++;
+            SaveSystem.statistics.meteoritesBrokenByCollateralDamage++;
         }
     }
 
@@ -144,7 +147,7 @@ public class Geode : GrabableItem {
         }
     }
 
-    private SellableItem DecideSellableItem() {
+    private Valuable DecideSellableItem() {
         float random = Random.Range(0, 100);
 
         float totalChance = Chances.x;
@@ -186,16 +189,9 @@ public class Geode : GrabableItem {
 
         return amounts[amounts.Count - 1];
     }
-
-    private void OnCollisionEnter(Collision collision) {
-        if (isLaunched) {
-            Hit(Vector3.zero, hitWall: true);
-            isLaunched = false;
-        }
-    }
 }
 
-public enum GeodeTier {
+public enum MeteorTier {
     Tier1,
     Tier2,
     Tier3,

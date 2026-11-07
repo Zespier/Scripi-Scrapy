@@ -85,7 +85,7 @@ public class MenuUpgrades : MonoBehaviour {
             case UpgradeType.DrillSpeed:
             case UpgradeType.HitArea:
             case UpgradeType.HandDrillSpeed:
-            case UpgradeType.BetterGeodes:
+            case UpgradeType.BetterMeteors:
             default:
                 break;
         }

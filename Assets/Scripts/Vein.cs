@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Vein : MonoBehaviour {
 
-    public Geode geode;
+    public Meteor geode;
 
-    public Geode DecideGeode() {
+    public Meteor DecideGeode() {
         return geode;
     }
 }

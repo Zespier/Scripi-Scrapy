@@ -5,7 +5,6 @@ public class Aspiradora : MonoBehaviour {
     public float suckDistance = 2f;
     public float absortionDistance = 0.5f;
     public float suckPointDistanceFromPlayer = 1f;
-    //public float accelerationAppliedToItems = 1f;
     public float maxVelocityForItems = 9f;
 
     private bool _isSucking;
@@ -20,11 +19,10 @@ public class Aspiradora : MonoBehaviour {
 
         Vector3 suckPoint = CameraHolder.instance.transform.position + CameraHolder.instance.transform.forward * suckPointDistanceFromPlayer;
 
-        for (int i = 0; i < Active.sellableItems.Count; i++) {
+        for (int i = 0; i < Active.valuable.Count; i++) {
 
-            SellableItem item = Active.sellableItems[i];
-            if (!item.canBeGrabbed || item.rb == null) { continue; }
-            if (item.isInInventory) { continue; }
+            Valuable item = Active.valuable[i];
+            if (item.rb == null) { continue; }
 
             //If it's too close to the point, successfully suck it
             if ((item.transform.position - suckPoint).sqrMagnitude < absortionDistance * absortionDistance) {
@@ -32,16 +30,10 @@ public class Aspiradora : MonoBehaviour {
                 continue;
             }
 
-            ////If the item is going too fast, don't apply more accelaration
-            //if (!(item.rb.linearVelocity.sqrMagnitude > maxVelocityForItems * maxVelocityForItems)) {
-            //If the item is close to the suckPoint, suck it
-            //TODO: Maybe circular movement with a SLerp?
+            //Accelerate the item with a lerp towards the aspiradora
             if ((item.transform.position - suckPoint).sqrMagnitude < suckDistance * suckDistance) {
-                //item.rb.AddForce((suckPoint - item.transform.position) * accelerationAppliedToItems, ForceMode.Acceleration);
-
                 item.rb.linearVelocity = Vector3.Slerp(item.rb.linearVelocity, (suckPoint - item.transform.position).normalized * maxVelocityForItems, Time.deltaTime * 7.5f);
             }
-            //}
         }
     }
 

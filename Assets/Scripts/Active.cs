@@ -3,31 +3,31 @@ using UnityEngine;
 
 public static class Active {
 
-    public static List<SellableItem> sellableItems = new(capacity: 200);
+    public static List<Valuable> valuable = new(capacity: 200);
 
-    public static void AddSellableItem(SellableItem sellableItem) {
-        if (!sellableItems.Contains(sellableItem)) {
-            sellableItems.Add(sellableItem);
+    public static void AddValuable(Valuable valuable) {
+        if (!Active.valuable.Contains(valuable)) {
+            Active.valuable.Add(valuable);
         }
     }
 
-    public static void RemoveSellableItem(SellableItem sellableItem) {
-        if (sellableItems.Contains(sellableItem)) {
-            sellableItems.Remove(sellableItem);
+    public static void RemoveValuable(Valuable valuable) {
+        if (Active.valuable.Contains(valuable)) {
+            Active.valuable.Remove(valuable);
         }
     }
 
-    public static List<Geode> geodes = new(capacity: 200);
+    public static List<Meteor> meteor = new(capacity: 200);
 
-    public static void AddGeode(Geode geode) {
-        if (!geodes.Contains(geode)) {
-            geodes.Add(geode);
+    public static void AddMeteor(Meteor meteor) {
+        if (!Active.meteor.Contains(meteor)) {
+            Active.meteor.Add(meteor);
         }
     }
 
-    public static void RemoveGeode(Geode geode) {
-        if (geodes.Contains(geode)) {
-            geodes.Remove(geode);
+    public static void RemoveMeteor(Meteor meteor) {
+        if (Active.meteor.Contains(meteor)) {
+            Active.meteor.Remove(meteor);
         }
     }
 }

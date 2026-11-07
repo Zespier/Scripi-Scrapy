@@ -105,7 +105,7 @@ public enum UpgradeType {
     HitArea = 2,
     HandDrill = 3,
     HandDrillSpeed = 4,
-    BetterGeodes = 5,
+    BetterMeteors = 5,
     MultipleMinerals = 8, //Último
     ExtraInventorySlots = 6,
     BiggerStacks = 7,
@@ -120,11 +120,12 @@ public class PlayerStatistics {
     public int automaticHits;
     public int collateralHits;
     public int totalHits;
-    public int geodesGenerated;
-    public int geodesBroken;
-    public int geodesBrokenByCollateralDamage;
-    public int geodesBrokenWithAutomaticGear;
-    public int itemsSelled;
+    public int meteoritesGenerated;
+    public int meteoritesBroken;
+    public int meteoritesBrokenByCollateralDamage;
+    public int meteoritesBrokenWithAutomaticGear;
+    public int valuablesMined;
+    public int valuablesSelled;
     public long moneyGained;
     public long moneySpent;
 
