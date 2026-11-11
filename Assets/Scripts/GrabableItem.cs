@@ -24,6 +24,7 @@ public class GrabableItem : Interactable {
 public enum GrabableState {
     None = 0,
     Suck = 1,
+    Falling = 2,
 }
 
 public enum ItemType {

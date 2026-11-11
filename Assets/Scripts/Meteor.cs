@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Meteor : GrabableItem {
+public class Meteor : MonoBehaviour {
 
     public Vector2 breakForce = new Vector2(4, 8);
     public List<GeodePart> children;
@@ -9,6 +9,9 @@ public class Meteor : GrabableItem {
     public List<Valuable> the3Items;
     public MeteorTier tier;
     public List<Vector3> chances = new List<Vector3>(capacity: 3);
+    public Vector3 impactPoint; //The point it falls towards
+    public float speed = 20f;
+    public GrabableState state = GrabableState.None;
 
     private float _currentHealth;
     private bool _wasHitForTheFirstTime;
@@ -30,6 +33,18 @@ public class Meteor : GrabableItem {
 
     private void OnDisable() {
         Active.RemoveMeteor(this);
+    }
+
+    private void Update() {
+        if (state == GrabableState.Falling) {
+            transform.position += Time.deltaTime * speed * (impactPoint - transform.position).normalized;
+            if ((transform.position - impactPoint).sqrMagnitude < 1 * 1) {
+                transform.position = impactPoint;
+                state = GrabableState.None;
+            }
+        } else {
+            transform.position = impactPoint;
+        }
     }
 
     public void ResetVariables() {
@@ -56,8 +71,8 @@ public class Meteor : GrabableItem {
 
         void AddForceToRB(Rigidbody rb) {
 
-            rb.linearVelocity = this.rb.linearVelocity;
-            rb.angularVelocity = this.rb.angularVelocity;
+            //rb.linearVelocity = this.rb.linearVelocity;
+            //rb.angularVelocity = this.rb.angularVelocity;
 
             Vector3 randomDirection = new Vector3(Random.Range(-1f, 1), Random.Range(-1f, 1), Random.Range(-1f, 1)).normalized;
             float randomForce = Random.Range(breakForce.x, breakForce.y);
@@ -84,6 +99,8 @@ public class Meteor : GrabableItem {
         SaveSystem.statistics.valuablesMined += numberOfMinerals;
         SaveSystem.statistics.meteoritesBroken++;
         CameraHolder.instance.BreakShake();
+
+        MeteorShower.instance.occupiedPoints.Remove(impactPoint);
 
         Destroy(gameObject);
     }

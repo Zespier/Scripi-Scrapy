@@ -83,9 +83,9 @@ public class Interactor : MonoBehaviour {
                     Launch();
 
                     //If there is no items on the inventory, hit whatever is in front
-                } else if (interactableInFront != null && interactableInFront is Meteor geode) {
+                } /*else if (interactableInFront != null && interactableInFront is Meteor geode) {
                     Hit(geode, geode.pointOfInteraction, manualHit: true);
-                }
+                }*/
             }
         }
         #endregion
@@ -115,12 +115,12 @@ public class Interactor : MonoBehaviour {
 
         if (_isHitting && Time.time - _attackSpeedTimer >= 1f / attackSpeed) {
 
-            if (interactableInFront != null && interactableInFront is Meteor geode) { //Check if the geode got hit
-                Hit(geode, geode.pointOfInteraction);
-                SaveSystem.statistics.automaticHits++;
-                _hitCancelTimer = Time.time;
-                return;
-            }
+            //if (interactableInFront != null && interactableInFront is Meteor geode) { //Check if the geode got hit
+            //    Hit(geode, geode.pointOfInteraction);
+            //    SaveSystem.statistics.automaticHits++;
+            //    _hitCancelTimer = Time.time;
+            //    return;
+            //}
 
             if (Time.time - _hitCancelTimer > timeToCancelHit) {
                 _isHitting = false;
