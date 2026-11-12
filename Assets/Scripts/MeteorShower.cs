@@ -43,10 +43,6 @@ public class MeteorShower : MonoBehaviour {
         if (Time.time - _timer >= baseSpawnSpeed / MeteorShowerUpgrades.meteorSpeed) {
             _timer = _timer + baseSpawnSpeed / MeteorShowerUpgrades.meteorSpeed;
             SpawnMeteor();
-            SpawnMeteor();
-            SpawnMeteor();
-            SpawnMeteor();
-            SpawnMeteor();
         }
     }
 
@@ -71,10 +67,6 @@ public class MeteorShower : MonoBehaviour {
 
         if (Time.time - _timer >= baseSpawnSpeed / MeteorShowerUpgrades.meteorSpeed) {
             _timer = _timer + baseSpawnSpeed / MeteorShowerUpgrades.meteorSpeed;
-            SpawnMeteor();
-            SpawnMeteor();
-            SpawnMeteor();
-            SpawnMeteor();
             SpawnMeteor();
         }
     }

@@ -12,6 +12,8 @@ public class Valuable : GrabableItem {
             return false;
             /* Feedback of inventory full */
         } else {
+            AudioManager.instance.PlayPop();
+            gameObject.gameObject.SetActive(false);
             return true;
         }
     }

@@ -19,9 +19,9 @@ public class Aspiradora : MonoBehaviour {
 
         Vector3 suckPoint = CameraHolder.instance.transform.position + CameraHolder.instance.transform.forward * suckPointDistanceFromPlayer;
 
-        for (int i = 0; i < Active.valuable.Count; i++) {
+        for (int i = 0; i < Active.valuables.Count; i++) {
 
-            Valuable item = Active.valuable[i];
+            Valuable item = Active.valuables[i];
             if (item.rb == null) { continue; }
 
             //If it's too close to the point, successfully suck it

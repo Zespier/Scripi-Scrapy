@@ -6,14 +6,14 @@ public class SellSpot : MonoBehaviour {
     public float sellDistance = 5;
 
     private void Update() {
-        for (int i = 0; i < Active.valuable.Count; i++) {
-            Valuable sellableItem = Active.valuable[i];
+        for (int i = 0; i < Active.valuables.Count; i++) {
+            Valuable valuable = Active.valuables[i];
 
-            if (transform.position.DistanceSquared(sellableItem.transform.position) < sellDistance * sellDistance) {
+            if (transform.position.DistanceSquared(valuable.transform.position) < sellDistance * sellDistance) {
                 AudioManager.instance.PlayPop();
-                Money.instance.AddMoneyBySellableItem(sellableItem.sellAmount);
+                Money.instance.AddMoneyBySellableItem(valuable.sellAmount);
                 SaveSystem.statistics.valuablesSelled++;
-                Destroy(sellableItem.gameObject);
+                valuable.gameObject.SetActive(false);
                 break;
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour {
 
@@ -49,8 +50,9 @@ public class Interactor : MonoBehaviour {
         #region Cross Activation
         //First active the cross if something is in front;
         Interactable interactableInFront = GetItemInFront();
+        Meteor meteorInFront = GetMeteorInFront();
         for (int i = 0; i < Cross.instance.parts.Count; i++) {
-            Cross.instance.parts[i].gameObject.SetActive(interactableInFront != null);
+            Cross.instance.parts[i].gameObject.SetActive(interactableInFront != null || meteorInFront != null);
         }
         #endregion
 
@@ -82,10 +84,16 @@ public class Interactor : MonoBehaviour {
                 if (Inventory.slots.Count > 0) { //This is the "manual" launch
                     Launch();
 
+                    //TODO: This is if I want to hit Grabables for some reason
+
                     //If there is no items on the inventory, hit whatever is in front
-                } /*else if (interactableInFront != null && interactableInFront is Meteor geode) {
+                } /*else if (interactableInFront != null && interactableInFront is Meteor geode) { 
                     Hit(geode, geode.pointOfInteraction, manualHit: true);
                 }*/
+
+                else if (meteorInFront != null) {
+                    Hit(meteorInFront, meteorInFront.hitPoint, manualHit: true);
+                }
             }
         }
         #endregion
@@ -171,23 +179,41 @@ public class Interactor : MonoBehaviour {
         for (int i = 0; i < totalHits; i++) {
             if (_hits[i].collider.CompareTag("Player")) { continue; }
 
-            if (_hits[i].collider.TryGetComponent(out GrabableItem grabable)) {
+            if (_hits[i].collider.CompareTag("Valuable")) {
+                //Valuables have their collider nside 2 children
+                if (_hits[i].collider.transform.parent.parent.TryGetComponent(out GrabableItem grabable)) {
 
-                if (grabable.state != GrabableState.None) { continue; }
+                    if (grabable.state != GrabableState.None) { continue; }
 
-                grabable.pointOfInteraction = _hits[i].point;
+                    grabable.pointOfInteraction = _hits[i].point;
 
-                //With default interactables we only return it
-                return grabable;
+                    //With default interactables we only return it
+                    return grabable;
+                }
             }
         }
 
         return null;
     }
 
-    public void Hit(Meteor geode, Vector3 hitPoint, bool manualHit = false) {
+    public Meteor GetMeteorInFront() {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        for (int i = 0; i < Active.meteors.Count; i++) {
+            Meteor meteor = Active.meteors[i];
+
+            if (meteor.CheckRay(ray, out Vector3 hitPoint)) {
+                meteor.hitPoint = hitPoint;
+                return meteor;
+            }
+        }
+
+        return null;
+    }
+
+    public void Hit(Meteor meteor, Vector3 hitPoint, bool manualHit = false) {
         SaveSystem.statistics.Hit(manualHit: manualHit);
-        geode.Hit(hitPoint, manualHit: manualHit);
+        meteor.Hit(hitPoint, manualHit: manualHit);
         SetTimer();
     }
 }

@@ -12,6 +12,8 @@ public class Meteor : MonoBehaviour {
     public Vector3 impactPoint; //The point it falls towards
     public float speed = 20f;
     public GrabableState state = GrabableState.None;
+    public float simulatedColliderRadius = 0.3f;
+    public Vector3 hitPoint;
 
     private float _currentHealth;
     private bool _wasHitForTheFirstTime;
@@ -45,6 +47,14 @@ public class Meteor : MonoBehaviour {
         } else {
             transform.position = impactPoint;
         }
+    }
+
+    public bool CheckRay(Ray ray, out Vector3 hitPoint) {
+        hitPoint = ray.origin + Vector3.Dot(transform.position - ray.origin, ray.direction) * ray.direction;
+
+        float distance = (hitPoint - transform.position).sqrMagnitude;
+
+        return distance <= simulatedColliderRadius * simulatedColliderRadius;
     }
 
     public void ResetVariables() {
@@ -82,6 +92,9 @@ public class Meteor : MonoBehaviour {
         }
 
         for (int i = 0; i < children.Count; i++) {
+
+            children[i].transform.parent = ValuableContainer.instance.transform;
+            children[i].rb = children[i].gameObject.AddComponent<Rigidbody>();
 
             if (children[i].TryGetComponent(out GeodePart geodePart)) {
                 geodePart.StartDissapearTimer();
@@ -132,8 +145,8 @@ public class Meteor : MonoBehaviour {
 
         if (!hitWall && Interactor.instance.HitArea == 1) { return; }
 
-        for (int i = 0; i < Active.meteor.Count; i++) {
-            Meteor geode = Active.meteor[i];
+        for (int i = 0; i < Active.meteors.Count; i++) {
+            Meteor geode = Active.meteors[i];
             if (geode == this) { continue; }
 
             if (hitPoint.DistanceSquared(geode.transform.position) < Interactor.instance.HitArea * Interactor.instance.HitArea) {
