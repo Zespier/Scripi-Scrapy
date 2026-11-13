@@ -17,6 +17,7 @@ public class MeteorShower : MonoBehaviour {
     [Range(0.001f, 1f)]
     public float minDistanceBetweenPoints = 0.5f;
     public float baseSpawnSpeed = 0.15f;
+    public LayerMask groundLayer;
 
     private float _timer;
 
@@ -58,6 +59,7 @@ public class MeteorShower : MonoBehaviour {
 
         newMeteor.state = GrabableState.Falling;
         newMeteor.impactPoint = impactPoint;
+        newMeteor.AdjustImpactPointToGround();
         //newMeteor.rb.AddForce(spawnPoint.forward * spawnForce, ForceMode.Impulse);
         //newMeteor.rb.linearVelocity = Vector3.zero;
         //newMeteor.rb.AddTorque(Random.insideUnitSphere * spinForce, ForceMode.Impulse);

@@ -49,6 +49,16 @@ public class Meteor : MonoBehaviour {
         }
     }
 
+    public void AdjustImpactPointToGround() {
+        Ray ray = new Ray(impactPoint + Vector3.up * 100f, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, int.MaxValue, MeteorShower.instance.groundLayer)) {
+            impactPoint = hit.point;
+        } else {
+            Debug.LogError($"Couldn't find ground => {this.name}");
+        }
+    }
+
     public bool CheckRay(Ray ray, out Vector3 hitPoint) {
         hitPoint = ray.origin + Vector3.Dot(transform.position - ray.origin, ray.direction) * ray.direction;
 
