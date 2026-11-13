@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,6 +6,8 @@ using UnityEngine.InputSystem;
 public class Interactor : MonoBehaviour {
 
     public Transform grabPoint;
+    public Transform rightHand;
+    public Transform leftHand;
     public float interactionDistance = 6;
     public float grabDistanceFromCamera = 4f;
     public float launchForce = 10f;
@@ -26,6 +29,7 @@ public class Interactor : MonoBehaviour {
     private float _timeLaunching;
     private RaycastHit[] _hits = new RaycastHit[10];
     private Camera mainCamera;
+    private Vector3 _lastHitPoint;
 
     //Primer golpe es fuerte, los demás solo 1
     public int FirstHitDamage => hitDamageByLevelss[MenuUpgrades.instance.GetUpgradeLevel(UpgradeType.HitDamage)];
@@ -36,6 +40,11 @@ public class Interactor : MonoBehaviour {
     private void Awake() {
         if (!instance) { instance = this; }
         mainCamera = Camera.main;
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(_lastHitPoint, 0.2f);
     }
 
     private void SetTimer() {
@@ -205,7 +214,7 @@ public class Interactor : MonoBehaviour {
         for (int i = 0; i < Active.meteors.Count; i++) {
             Meteor meteor = Active.meteors[i];
 
-            if (meteor.CheckRay(ray, out Vector3 hitPoint)) {
+            if (meteor.CheckRay(ray, out Vector3 hitPoint, interactionDistance)) {
                 meteor.hitPoint = hitPoint;
                 return meteor;
             }
@@ -214,9 +223,58 @@ public class Interactor : MonoBehaviour {
         return null;
     }
 
+    private int currentSign = 1;
+
     public void Hit(Meteor meteor, Vector3 hitPoint, bool manualHit = false) {
         SaveSystem.statistics.Hit(manualHit: manualHit);
         meteor.Hit(hitPoint, manualHit: manualHit);
         SetTimer();
+
+        _lastHitPoint = hitPoint;
+
+        if (currentSign == 1) {
+
+            Vector3 localPosition = hitPoint - rightHand.parent.position;
+            rightHand.parent.forward = localPosition;
+            rightHand.localPosition = new Vector3(0,0,localPosition.magnitude);
+            if (c_RetractArmRight != null) {
+                StopCoroutine(c_RetractArmRight);
+            }
+
+            c_RetractArmRight = StartCoroutine(C_RetractArmRight());
+
+        } else {
+            Vector3 localPosition = hitPoint - leftHand.parent.position;
+
+            leftHand.parent.forward = localPosition;
+            leftHand.localPosition = new Vector3(0, 0, localPosition.magnitude);
+            if (c_RetractArmLeft != null) {
+                StopCoroutine(c_RetractArmLeft);
+            }
+
+            c_RetractArmLeft = StartCoroutine(C_RetractArmLeft());
+        }
+
+        currentSign *= -1;
+    }
+
+    private Coroutine c_RetractArmRight;
+    public IEnumerator C_RetractArmRight() {
+        while (rightHand.localPosition != Vector3.zero) {
+            rightHand.localPosition = Vector3.Lerp(rightHand.localPosition, Vector3.zero, Time.deltaTime * 5f);
+            yield return null;
+        }
+
+        rightHand.localPosition = Vector3.zero;
+    }
+
+    private Coroutine c_RetractArmLeft;
+    public IEnumerator C_RetractArmLeft() {
+        while (leftHand.localPosition != Vector3.zero) {
+            leftHand.localPosition = Vector3.Lerp(leftHand.localPosition, Vector3.zero, Time.deltaTime * 5f);
+            yield return null;
+        }
+
+        leftHand.localPosition = Vector3.zero;
     }
 }

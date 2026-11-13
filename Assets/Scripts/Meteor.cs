@@ -59,8 +59,12 @@ public class Meteor : MonoBehaviour {
         }
     }
 
-    public bool CheckRay(Ray ray, out Vector3 hitPoint) {
+    public bool CheckRay(Ray ray, out Vector3 hitPoint, float maxDistance) {
         hitPoint = ray.origin + Vector3.Dot(transform.position - ray.origin, ray.direction) * ray.direction;
+
+        if ((ray.origin - hitPoint).sqrMagnitude >= maxDistance) {
+            return false;
+        }
 
         float distance = (hitPoint - transform.position).sqrMagnitude;
 

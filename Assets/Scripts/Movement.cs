@@ -3,6 +3,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour {
 
     public Rigidbody rb;
+    public Transform body;
     public float speed = 6;
 
     private void Update() {
@@ -19,6 +20,8 @@ public class Movement : MonoBehaviour {
         Vector3 linearVelocity = (customRight * InputManager.Movement.x + customForwward * InputManager.Movement.y).normalized * speed;
         linearVelocity.y = rb.linearVelocity.y;
         rb.linearVelocity = linearVelocity;
+
+        body.forward = Vector3.Slerp(body.forward, CameraHolder.instance.transform.forward, Time.deltaTime * 10f);
 
         //rb.linearVelocity = new Vector3(InputManager.Movement.x * , rb.linearVelocity.y, InputManager.Movement.y).normalized * speed;
     }
