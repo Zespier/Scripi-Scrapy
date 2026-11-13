@@ -15,6 +15,7 @@ public class Interactor : MonoBehaviour {
     public Vector2 launchSpeedRange = new Vector2(2, 10);
     public float timeToReachMaxLaunchSpeed = 4f;
     public int slotSelected = 0;
+    public Animator aspiradoraAnimator;
 
     private bool _isHitting;
     private float _hitCancelTimer;
@@ -148,6 +149,8 @@ public class Interactor : MonoBehaviour {
 
     public void Launch() {
         SetLaunchTimer();
+
+        aspiradoraAnimator.Play("Shoot");
 
         slotSelected = Inventory.slots.Count - 1; //TODO: Change to input management of the player
 

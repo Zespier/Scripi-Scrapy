@@ -13,6 +13,8 @@ public class Valuable : GrabableItem {
             /* Feedback of inventory full */
         } else {
             AudioManager.instance.PlayPop();
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             gameObject.gameObject.SetActive(false);
             return true;
         }

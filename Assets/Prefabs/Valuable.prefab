@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7318987970425864341}
   m_Layer: 7
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Valuable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1640184681360237247}
   m_Layer: 7
   m_Name: FBX
-  m_TagString: Untagged
+  m_TagString: Valuable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61,7 +61,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4564711, y: 0.45647103, z: 0.45647103}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7318987970425864341}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 540944673591274523}
   m_Layer: 7
   m_Name: Valuable
-  m_TagString: Untagged
+  m_TagString: Valuable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
